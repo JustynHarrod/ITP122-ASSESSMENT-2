@@ -2,7 +2,7 @@
 
                                     List of things to agree upon
 
-* Workload Split (Menu & Intergration, Ticket Purchasing, Availabilty & Validation, Reporting & Testing)
+* Workload Split (Menu & Integration, Ticket Purchasing, Availabilty & Validation, Reporting & Testing)
 * Shared Data Structure (Dictionaries, Lists etc)
 * Function Names & Inputs (purchase_tickets(), show_availability() etc)
 * One Master File (I have setup a repository for us to use if everyone is agreeable to using that)
@@ -16,7 +16,7 @@ This way everyone reviews exactly one section and everyone is reviewed.
 
 SUGGESTED SPLIT CODING
 
-Person 1: Main manu, main loop, navigation, safe exit & joining everyone's functions into one program.
+Person 1: Main menu, main loop, navigation, safe exit & joining everyone's functions into one program.
 Person 2: Purchasing tickets, recording customer details, updating availability after a booking.
 Person 3: Displaying availability, input validation helpers, preventing invalid bookings (too many tickets, negative numbers, sold out sessions)
 Person 4: Total tickets sold tickets remaining, booking summaries plus the test plan.
@@ -24,6 +24,6 @@ Person 4: Total tickets sold tickets remaining, booking summaries plus the test 
 SUGGESTED SPLIT Reporting
 
 Person 1: Project Planning (overview, design reasoning, assumptions)
-Person 2: Development Process (purchaing parts)
+Person 2: Development Process (purchasing parts)
 Person 3: Development Process (validation parts)
 Person 4: Validation and Verification (test cases, improvements after testing)
