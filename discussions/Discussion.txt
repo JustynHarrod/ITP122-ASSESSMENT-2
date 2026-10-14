@@ -27,3 +27,20 @@ Person 1: Project Planning (overview, design reasoning, assumptions)
 Person 2: Development Process (purchasing parts)
 Person 3: Development Process (validation parts)
 Person 4: Validation and Verification (test cases, improvements after testing)
+
+SUGGESTED TIMELINE (Due Sunday 8 Nov)
+
+* Tue 20 Oct (first meeting): Agree roles, shared data structure, function names and branch names
+* Wed 21 Oct: Menu with placeholder functions and agreed data structure pushed to main so everyone can start
+
+* Sun 25 Oct: Everyone's section is working on their own branch (even if rough). Share a screenshot in the group chat. Anyone stuck says so now
+* Sun 1 Nov: ALL CODE MERGED TO MAIN and tested. Bugs found are fixed
+* Sun 8 Nov: Code reviews done, group report compiled, individual reflections finished and SUBMITTED
+
+NOTES
+* Everyone keeps dated screenshots of their development, bugs and fixes as they go
+* Write your own report section as you build, not at the end
+* The 1 Nov merge date is the most important one, because testing, reviews and the report all depend on finished code
+* Code review circle (1 reviews 2, 2 reviews 3, 3 reviews 4, 4 reviews 1) happens in the week of 2 Nov
+* Aim to have the report ready by Fri 6 Nov, so Sat 7 Nov is a proofread, not a rush
+* Dates are a suggestion. Agree changes at the meeting and update this list
