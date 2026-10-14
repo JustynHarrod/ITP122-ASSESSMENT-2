@@ -17,4 +17,3 @@ This repository contains our group assessment project.
 - Development
 - Testing
 
-this is a test
