@@ -36,7 +36,7 @@ SUGGESTED TIMELINE (Due Sunday 8 Nov)
 * Tue 20 Oct (first meeting): Agree roles, shared data structure, function names and branch names
 * Wed 21 Oct: Menu with placeholder functions and agreed data structure pushed to main so everyone can start
 
-* Sun 25 Oct: Everyone's section is working on their own branch (even if rough). Share a screenshot in the group chat. Anyone stuck says so now
+* Sat 24 / Sun 25 Oct: Everyone's section is working on their own branch (even if rough). Share a screenshot in the group chat. Anyone stuck says so now
 * Sun 1 Nov: ALL CODE MERGED TO MAIN and tested. Bugs found are fixed
 * Sun 8 Nov: Code reviews done, group report compiled, individual reflections finished and SUBMITTED
 
