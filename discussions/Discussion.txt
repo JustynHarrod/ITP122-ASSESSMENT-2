@@ -14,19 +14,22 @@ CODE REVIEW (TASK 3 PART B)
 Review in a circle, so 1 reviews 2, 2 reviews 3, 3 reviews 4 and 4 reviews 1.
 This way everyone reviews exactly one section and everyone is reviewed. 
 
-SUGGESTED SPLIT CODING
+List of things that need to be implemented at minimum.
+* Movie Catalogue Data: Create a centralised structure (like a list of dictionaries) storing details for each movie (title, genre, rating, initial capacity)
+* Pricing Rules: Define standard ticket category prices (e.g. Adult, Child, COnsession)
+* Availabilty Checker: a feature that checks if a selected movie still has enough tickets left before allowing purchase.
+* Price Calculator: a calculation function that multiplies the chosen ticket type by the quantity requested and outputs the final subtotal.
+* Inventory Updater: a function that subtracts the purchased ticket quantity from the movie's remaining capacity after a successful transaction.
+* Sales Tracker: a mechanism to tally up how many total tickets have been sold accross all movies.
+* Revenue Calculator: a function that aggregates total money earned from ticket sales.
+* Summary Generator: a text formatting function that compiles overall statistics (e.g. tickets remaining per movie, best selling movie or total revenue).
+* Staff Login: a function that checks if a entered username and password match admin credentials.
 
-Person 1: Main menu, main loop, navigation, safe exit & joining everyone's functions into one program.
-Person 2: Purchasing tickets, recording customer details, updating availability after a booking.
-Person 3: Displaying availability, input validation helpers, preventing invalid bookings (too many tickets, negative numbers, sold out sessions)
-Person 4: Total tickets sold tickets remaining, booking summaries
+ALL FUNCTIONS AND MODULES NEED:
+* Quantity & Input Checkers: Rules to ensure that when a user types a ticket quantity, it is a valid positive whole number (blocking letters, symbols, or negative numbers).
+* Sold Out Guard: Logic to catch and handle errors if a user tries to buy tickets for a session that has zero seats left.
+* Empty State Handlers: Safety checks to ensure reports or displays don't crash if no sales have been made yet (e.g. returning "No sales recorded" instead of throwing a math error).
 
-SUGGESTED SPLIT Reporting
-
-Person 1: Project Planning (overview, design reasoning, assumptions)
-Person 2: Development Process (purchasing parts)
-Person 3: Development Process (validation parts)
-Person 4: Validation and Verification (test cases, improvements after testing)
 
 SUGGESTED TIMELINE (Due Sunday 8 Nov)
 
