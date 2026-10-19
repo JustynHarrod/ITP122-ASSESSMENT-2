@@ -15,16 +15,16 @@ Review in a circle, so 1 reviews 2, 2 reviews 3, 3 reviews 4 and 4 reviews 1.
 This way everyone reviews exactly one section and everyone is reviewed. 
 
 List of things that need to be implemented at minimum.
-* Movie Catalogue Data: Create a centralised structure (like a list of dictionaries) storing details for each movie (title, genre, rating, initial capacity)
-* Pricing Rules: Define standard ticket category prices (e.g. Adult, Child, COnsession)
-* Availabilty Checker: A feature that checks if a selected movie still has enough tickets left before allowing purchase.
-* Price Calculator: A calculation function that multiplies the chosen ticket type by the quantity requested and outputs the final subtotal.
-* Inventory Updater: A function that subtracts the purchased ticket quantity from the movie's remaining capacity after a successful transaction.
-* Sales Tracker: A mechanism to tally up how many total tickets have been sold accross all movies.
-* Revenue Calculator: A function that aggregates total money earned from ticket sales.
-* Summary Generator: A text formatting function that compiles overall statistics (e.g. tickets remaining per movie, best selling movie or total revenue).
-* Staff Login: A function that checks if a entered username and password match admin credentials.
-* Payment Gateway: Collect card info, making sure that any combination of 16 digit card number, 4 digit expiry and 3 digit cvv is successful. Everything else wont work and needs to be handled as errors.
+*(9)✅ Movie Catalogue Data: Create a centralised structure (like a list of dictionaries) storing details for each movie (title, genre, rating, initial capacity)
+*(10)✅ Pricing Rules: Define standard ticket category prices (e.g. Adult, Child, Concession)
+*(6) Availabilty Checker: A feature that checks if a selected movie still has enough tickets left before allowing purchase.
+*(8) Price Calculator: A calculation function that multiplies the chosen ticket type by the quantity requested and outputs the final subtotal.
+*(3) Inventory Updater: A function that subtracts the purchased ticket quantity from the movie's remaining capacity after a successful transaction.
+*(4) Sales Tracker: A mechanism to tally up how many total tickets have been sold accross all movies.
+*(5) Revenue Calculator: A function that aggregates total money earned from ticket sales.
+*(1) Summary Generator: A text formatting function that compiles overall statistics (e.g. tickets remaining per movie, best selling movie or total revenue).
+*(7) Staff Login: A function that checks if a entered username and password match admin credentials.
+*(2) Payment Gateway: Collect card info, making sure that any combination of 16 digit card number, 4 digit expiry and 3 digit cvv is successful. Everything else wont work and needs to be handled as errors.
 
 ALL FUNCTIONS AND MODULES NEED:
 * Quantity & Input Checkers: Rules to ensure that when a user types a ticket quantity, it is a valid positive whole number (blocking letters, symbols, or negative numbers).
