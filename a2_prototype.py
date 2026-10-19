@@ -266,7 +266,7 @@ def create_app():
         
         m_genre = tk.Label(
             card,
-            text=f"genre: {movie['genre']}",
+            text=f"Genre: {movie['genre']}",
             font=("Helvetica", 9),
             fg="#555555",
             bg="#ffffff",
