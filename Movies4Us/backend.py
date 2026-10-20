@@ -6,7 +6,7 @@ MOVIES_DATA = [
         "rating": "M",
         "runtime": "119",
         "capacity": 50,
-        "tickets_remaining": 50,
+        "tickets_remaining ": 50,
         "poster": "images/streetfighter.png"
     },
     {
@@ -90,14 +90,17 @@ PRICES = {
 SALES_HISTORY = []
 
 STAFF_CREDENTIALS = {
-    "username": "wayne",
-    "password": "12345"
-    "username": "justyn",
-    "password": "123456"
-    "username": "james",
-    "password": "1234567"
-    "username": "oren",
-    "password": "12345678"
-    "username": "rob",
-    "password": "123456789"
+    "wayne": "12345",
+    "justyn": "123456",
+    "james": "1234567",
+    "oren": "12345678",
+    "rob": "123456789"
 }
+
+username = input("Enter your username: ")
+password = input("Enter your password: ")
+
+if username in STAFF_CREDENTIALS and STAFF_CREDENTIALS[username] == password:
+    print("Login successful!")
+else:
+    print("Invalid username or password. Please try again.")
