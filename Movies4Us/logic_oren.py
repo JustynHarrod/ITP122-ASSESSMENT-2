@@ -1,16 +1,22 @@
 import backend
 
-def check_availability(movie_title, quantity):        # TODO: Check backend.MOVIES_DATA for remaining tickets
-       if movie_title not in backend.MOVIES_DATA["title"]:
-              return "Error: No movie exist"
+def check_availability(movie_title, requested_seats):
+       movie = None
+       for m in backend.MOVIES_DATA:
+           if m.get('title', "") == movie_title.lower().strip():
+                     m = movie
+                     break
 
-       available_seats = backend.MOVIES_DATA["title"]["tickets_remaining"]
+       if movie is None:
+              return False, "Error: No movie exist"
+
+       if requested_seats > movie['tickets_remaining']:
+              return False, "Error: The movie doesn't have enough seats available."
+       
        return True, "Seats available"
 
-def record_sale(sale_data):        # TODO: Append to backend.SALES_HISTORY list
+print(check_availability("Street Fighter", 50))
+print(check_availability("Avatar", 50))
+
+def record_sale(sale_data):
        return True
-
-print(backend.MOVIES_DATA[1]["title"]["tickets_remaining"])
-
-
-
