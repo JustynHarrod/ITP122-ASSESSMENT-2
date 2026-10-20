@@ -2,8 +2,6 @@
 MOVIES4US - LOGIC FUNCTIONS & STUBS CHEAT SHEET
 ============================================================
 
---- PERSON 1: BOOKING & PRICING ---
-
 1. check_availability(movie_title, quantity)
    - Depends on: backend.MOVIES_DATA
    - Returns: True/False (and a message)
@@ -23,8 +21,6 @@ MOVIES4US - LOGIC FUNCTIONS & STUBS CHEAT SHEET
        # TODO: Multiply backend.TICKET_PRICES[ticket_type] by quantity
        return 15.00 * quantity
 
-
---- PERSON 2: TRANSACTION & INVENTORY ---
 
 3. update_inventory(movie_title, quantity)
    - Depends on: backend.MOVIES_DATA & check_availability
@@ -46,8 +42,6 @@ MOVIES4US - LOGIC FUNCTIONS & STUBS CHEAT SHEET
        return True, "Payment Approved"
 
 
---- PERSON 3: SALES & REVENUE ---
-
 5. record_sale(sale_data)
    - Depends on: process_payment
    - Returns: True
@@ -67,8 +61,6 @@ MOVIES4US - LOGIC FUNCTIONS & STUBS CHEAT SHEET
        # TODO: Loop through sales history and sum totals
        return 150.00
 
-
---- PERSON 4: ADMIN & REPORTING ---
 
 7. generate_summary_report()
    - Depends on: calculate_revenue, record_sale, backend.MOVIES_DATA
