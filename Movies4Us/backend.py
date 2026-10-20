@@ -88,7 +88,7 @@ PRICES = {
 }
 
 SALES_HISTORY = [
-    {"type": "Adult", "amount": 7},
+    {"type": "Adult", "amount": 0},
     {"type": "Child", "amount": 0},
     {"type": "Concession", "amount": 0}
 ]
