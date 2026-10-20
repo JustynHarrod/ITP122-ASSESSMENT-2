@@ -98,6 +98,6 @@ STAFF_CREDENTIALS = {
     "password": "1234567"
     "username": "oren",
     "password": "12345678"
-    ""username": "rob",
+    "username": "rob",
     "password": "123456789"
 }
