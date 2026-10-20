@@ -87,7 +87,11 @@ PRICES = {
     "Concession":12.0
 }
 
-SALES_HISTORY = []
+SALES_HISTORY = [
+    {"type": "Adult", "amount": 7},
+    {"type": "Child", "amount": 0},
+    {"type": "Concession", "amount": 0}
+]
 
 STAFF_CREDENTIALS = {
     "username": "wayne",
