@@ -90,6 +90,14 @@ PRICES = {
 SALES_HISTORY = []
 
 STAFF_CREDENTIALS = {
-    "username": "admin",
-    "password": "password"
+    "username": "wayne",
+    "password": "12345"
+    "username": "justyn",
+    "password": "123456"
+    "username": "james",
+    "password": "1234567"
+    "username": "oren",
+    "password": "12345678"
+    "username": "rob",
+    "password": "123456789"
 }
