@@ -29,4 +29,4 @@ def record_sale(sale_data, quantity):
               print("Sale not Found")
        return None
 price = record_sale("Adult", 5)
-print (f"Price of ticket: {price:.2f}")
+print (f"Price of ticket: ${price:.2f}")
