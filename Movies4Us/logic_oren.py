@@ -9,7 +9,7 @@ def check_availability(movie_title, requested_seats):
                      movie = m
                      break
 
-       # backup if movie title doesn't exist.
+       # backup if movie doesn't exist.
        if movie is None:
               return False, f"Error: {movie_title} doesn't exist in backend data."
 
