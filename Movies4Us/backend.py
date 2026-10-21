@@ -56,7 +56,7 @@ MOVIES_DATA = [
         "rating": "PG",
         "runtime": "108",
         "capacity": 50,
-        "tickets_remaining": 50,
+        "tickets_remaining": 40,
         "poster": "images/forgottenisland.png"
     },
     {
@@ -90,7 +90,7 @@ PRICES = {
 SALES_HISTORY = [
     {"type": "Adult", "amount": 0},
     {"type": "Child", "amount": 0},
-    {"type": "Concession", "amount": 0}
+    {"type": "Concession", "amount": 10}
 ]
 
 STAFF_CREDENTIALS = {
