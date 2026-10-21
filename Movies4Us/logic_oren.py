@@ -25,8 +25,8 @@ def record_sale(sale_data, quantity):
        for p in backend.SALES_HISTORY:
               if p.get ("type", "").lower().strip() == sale_data.lower().strip():
                      return backend.PRICES[sale_data.strip().title()] * quantity
-       else:
-              print("Sale not Found")
+              else:
+                     print("Sale not Found")
        return None
 price = record_sale("Adult", 5)
 print (f"Price of ticket: ${price:.2f}")
