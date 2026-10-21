@@ -41,8 +41,8 @@ def generate_sales_report():
               "total_sales": tickets_sold, 
               "revenue": revenue, 
               "average_ticket_price": average,
-              "top_movies": top_movies if top_movies else "No tickets sold yet",
-              "lowest_movies": lowest_movies if lowest_movies else "No tickets sold yet",
+              "top_movies": top_movies,
+              "lowest_movies": lowest_movies,
               }
 
 def calculate_revenue():
