@@ -6,14 +6,13 @@ def generate_sales_report():
        Returns a dictionary with total sales, total revenue, 
        average ticket price, and lists for top and lowest-selling movies.
        """
-       sales = 0
+       tickets_sold = 0
        revenue = calculate_revenue()
-       # Calculate total tickets sold
        for sale in backend.SALES_HISTORY:
-              sales += sale["amount"]
+              tickets_sold += sale["amount"]
        # Prevent ZeroDivisionError if no sales have been recorded yet
-       if revenue > 0 and sales > 0:
-              average = revenue / sales
+       if revenue > 0 and tickets_sold > 0:
+              average = revenue / tickets_sold
        else:
               average = 0
        most_sold = 0
@@ -39,7 +38,7 @@ def generate_sales_report():
               top_movies = []
               lowest_movies = []
        return {
-              "total_sales": sales, 
+              "total_sales": tickets_sold, 
               "revenue": revenue, 
               "average_ticket_price": average,
               "top_movies": top_movies if top_movies else "No tickets sold yet",
@@ -49,7 +48,6 @@ def generate_sales_report():
 def calculate_revenue():
        """Calculates total gross revenue from sales history.""" 
        total = 0
-       # Iterate through sales history to aggregate revenue per ticket type
        for sale in backend.SALES_HISTORY:
            price = backend.PRICES[sale["type"]]
            total += price * sale["amount"]      
