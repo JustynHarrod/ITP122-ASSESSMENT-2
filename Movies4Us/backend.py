@@ -1,4 +1,4 @@
-MOVIES_DATA = [
+#MOVIES_DATA = [
     {
         "id": 1,
         "title": "Street Fighter",
@@ -81,26 +81,26 @@ MOVIES_DATA = [
     }
 ]
 
-PRICES = {
-    "Adult": 15.0,
-    "Child": 10.0,
-    "Concession":12.0
+#prices = {
+ #   "Adult": 15.0,
+  #  "Child": 10.0,
+   # "Concession":12.0
 }
 
-SALES_HISTORY = []
+#sales_history = [
+   # {"type": "Adult", "amount": 0},
+   # {"type": "Child", "amount": 0},
+   ## {"type": "Concession", "amount": 0}]
 
-STAFF_CREDENTIALS = {
-    "wayne": "12345",
-    "justyn": "123456",
-    "james": "1234567",
-    "oren": "12345678",
-    "rob": "123456789"
-}
+#staff_credentials = {}
 
 username = input("Enter your username: ")
 password = input("Enter your password: ")
 
-if username in STAFF_CREDENTIALS and STAFF_CREDENTIALS[username] == password:
+if username in staff_credentials and staff_credentials[username] == password:
     print("Login successful!")
 else:
     print("Invalid username or password. Please try again.")
+
+
+                                                                                                                                                                                                                                                                                                                              
