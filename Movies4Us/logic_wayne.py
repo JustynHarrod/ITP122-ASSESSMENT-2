@@ -1,8 +1,8 @@
 import tkinter
-window = tkinter.Tk()
-window.title("login form")
-window.geometry("640x750")
-window.configure(bg="blue")
+frame = tkinter.Tk()
+frame.title("login form")
+frame.geometry("340x440")
+frame.configure(bg="blue")
 
 frame = tkinter.Frame()
 
@@ -24,7 +24,7 @@ password_label.grid(row=2, column=0)
 password_entry.grid(row=2, column=1, pady=20)
 login_button.grid(row=3, column=0, columnspan=3, sticky="news")
 
+frame.pack()
 
 
-
-window.mainloop()
+frame.mainloop()
