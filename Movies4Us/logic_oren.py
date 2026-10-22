@@ -52,6 +52,6 @@ price_concession = record_sale("concession", 10)
 if price is not None:
        print (f"Price of ticket: ${price:.2f}") 
 
-print(f"Adult tickets: ${price_adult:.2f}")
-print(f"Child tickets: ${price_child:.2f}")
-print(f"Concession tickets: ${price_concession:.2f}")
+print(f"Adult tickets: ${price_adult:,.2f}")
+print(f"Child tickets: ${price_child:,.2f}")
+print(f"Concession tickets: ${price_concession:,.2f}")
