@@ -19,7 +19,10 @@ def generate_sales_report():
        least_sold = None
        # First pass: determine the maximum and minimum ticket sales thresholds
        for movie in backend.MOVIES_DATA:
-              sold = movie["capacity"] - movie["tickets_remaining"]
+              sold = sum(
+                     session["capacity"] - session["tickets_remaining"]
+                     for session in movie["sessions"]
+              )
               if sold > most_sold:
                      most_sold = sold
               if least_sold is None or sold < least_sold:
@@ -28,7 +31,10 @@ def generate_sales_report():
        lowest_movies = []
        # Second pass: capture all titles matching thresholds (handles multi-movie ties)
        for movie in backend.MOVIES_DATA:
-              sold = movie["capacity"] - movie["tickets_remaining"]
+              sold = sum(
+                     session["capacity"] - session["tickets_remaining"]
+                     for session in movie["sessions"]
+              )
               if sold == most_sold:
                      top_movies.append(movie["title"])
               if sold == least_sold:

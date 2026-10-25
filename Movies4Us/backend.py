@@ -5,7 +5,7 @@ MOVIES_DATA = [
         "genre": "Action",
         "rating": "M",
         "runtime": "119",
-        "poster": "images/streetfighter.png",
+        "poster": "Movies4Us/images/streetfighter.png",
         "sessions": [
             {"session_id": 101, "time": "10:00 AM", "capacity": 50, "tickets_remaining": 50},
             {"session_id": 102, "time": "1:00 PM", "capacity": 50, "tickets_remaining": 50},
@@ -19,7 +19,7 @@ MOVIES_DATA = [
         "genre": "Thriller",
         "rating": "M",
         "runtime": "106",
-        "poster": "images/whalefall.png",
+        "poster": "Movies4Us/images/whalefall.png",
         "sessions": [
             {"session_id": 201, "time": "10:15 AM", "capacity": 50, "tickets_remaining": 50},
             {"session_id": 202, "time": "1:15 PM", "capacity": 50, "tickets_remaining": 50},
@@ -33,7 +33,7 @@ MOVIES_DATA = [
         "genre": "Horror",
         "rating": "MA15+",
         "runtime": "94",
-        "poster": "images/residentevil.png",
+        "poster": "Movies4Us/images/residentevil.png",
         "sessions": [
             {"session_id": 301, "time": "10:30 AM", "capacity": 50, "tickets_remaining": 50},
             {"session_id": 302, "time": "1:30 PM", "capacity": 50, "tickets_remaining": 50},
@@ -47,7 +47,7 @@ MOVIES_DATA = [
         "genre": "Biography | Drama",
         "rating": "M",
         "runtime": "112",
-        "poster": "images/thesocialreckoning.png",
+        "poster": "Movies4Us/images/thesocialreckoning.png",
         "sessions": [
             {"session_id": 401, "time": "10:00 AM", "capacity": 50, "tickets_remaining": 50},
             {"session_id": 402, "time": "1:00 PM", "capacity": 50, "tickets_remaining": 50},
@@ -61,7 +61,7 @@ MOVIES_DATA = [
         "genre": "Adventure | Drama | Thriller",
         "rating": "M",
         "runtime": "100",
-        "poster": "images/heartofthebeast.png",
+        "poster": "Movies4Us/images/heartofthebeast.png",
         "sessions": [
             {"session_id": 501, "time": "10:45 AM", "capacity": 50, "tickets_remaining": 50},
             {"session_id": 502, "time": "1:45 PM", "capacity": 50, "tickets_remaining": 50},
@@ -75,7 +75,7 @@ MOVIES_DATA = [
         "genre": "Adventure | Animation | Comedy",
         "rating": "PG",
         "runtime": "108",
-        "poster": "images/forgottenisland.png",
+        "poster": "Movies4Us/images/forgottenisland.png",
         "sessions": [
             {"session_id": 601, "time": "9:30 AM", "capacity": 50, "tickets_remaining": 50},
             {"session_id": 602, "time": "12:00 PM", "capacity": 50, "tickets_remaining": 50},
@@ -89,7 +89,7 @@ MOVIES_DATA = [
         "genre": "Action | Adventure",
         "rating": "M",
         "runtime": "145",
-        "poster": "images/spiderman.png",
+        "poster": "Movies4Us/images/spiderman.png",
         "sessions": [
             {"session_id": 701, "time": "10:00 AM", "capacity": 50, "tickets_remaining": 50},
             {"session_id": 702, "time": "1:15 PM", "capacity": 50, "tickets_remaining": 50},
@@ -103,7 +103,7 @@ MOVIES_DATA = [
         "genre": "Drama",
         "rating": "M",
         "runtime": "172",
-        "poster": "images/odyssey.png",
+        "poster": "Movies4Us/images/odyssey.png",
         "sessions": [
             {"session_id": 801, "time": "9:00 AM", "capacity": 50, "tickets_remaining": 50},
             {"session_id": 802, "time": "1:00 PM", "capacity": 50, "tickets_remaining": 50},
