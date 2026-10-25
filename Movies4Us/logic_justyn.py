@@ -1,4 +1,5 @@
 import backend
+import random
 
 def generate_sales_report():
        """Generates an aggregated sales report. 
@@ -59,4 +60,24 @@ def calculate_revenue():
            total += price * sale["amount"]      
        return total
 
-print(generate_sales_report())
+def initialize_random_sales():
+       """Randomly populates session ticket sales and ticket type distributions on launch."""
+       # Reset sales history first to prevent stacking if re-initialized
+       for item in backend.SALES_HISTORY:
+              item["amount"] = 0
+       total_tickets_sold = 0
+       for movie in backend.MOVIES_DATA:
+              for session in movie["sessions"]:
+                     # Decide how many tickets to sell for this session (e.g., between 0 and 45 out of 50 capacity)
+                     capacity = session["capacity"]
+                     tickets_sold = random.randint(2, 42) if random.random() > 0.1 else 0 # 10% chance of a completely empty session
+                     # Update session remaining tickets
+                     session["tickets_remaining"] = max(0, capacity - tickets_sold)
+                     total_tickets_sold += tickets_sold
+                     # Randomly split those sold tickets among Adult, Child, and Concession
+                     for _ in range(tickets_sold):
+                            ticket_type = random.choices(["Adult", "Child", "Concession"], weights=[0.6, 0.2, 0.2], k=1)[0] # 60% Adults, 20% Children, 20% Concession
+                            # Find and increment the corresponding sales history entry
+                            for entry in backend.SALES_HISTORY:
+                                   if entry["type"] == ticket_type:
+                                          entry["amount"] += 1
