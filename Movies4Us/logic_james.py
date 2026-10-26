@@ -1,8 +1,7 @@
-import datetime
 from datetime import datetime
+import backend
 
-
-def process_payment(card_num, expiry, cvv, amount, expiry_year, expiry_month, current_year, current_month):
+def process_payment(card_num, expiry, cvv):
 
 
 
@@ -11,16 +10,12 @@ def process_payment(card_num, expiry, cvv, amount, expiry_year, expiry_month, cu
     if len(card_num) != 16 or not card_num.isdigit():
        return False, "Invalid Card Number"
 
-    else: 
-        pass
 
 #Checking digits of expiry
     
     if len(expiry) != 4 or not expiry.isdigit():
        return False, "Invalid Expiry"
 
-    else:
-        pass
 
 #Creating variables for ease of use
 
@@ -31,21 +26,18 @@ def process_payment(card_num, expiry, cvv, amount, expiry_year, expiry_month, cu
 
 #Checking if the card is in date, if the expiry is too far in the future then it will be invalid as most cards expire every 2-3 years, though gift cards can last 10 occasionally
 
-    if expiry_year < current_year or expiry_year > current_year + 11:
-        return False, "Invalid Expiry"
+    if expiry_year < current_year or expiry_year > current_year + 11 or expiry_month > 12 or expiry_month < 1:
         
-    else:
-        pass
-
-
-    if not expiry_month >= current_month:
         return False, "Invalid Expiry"
 
-    else:
-        pass
+#Only checking the month if the expiry year is equal to current year, range checking the entered expiry month to ensure it is a valid entry
+
+    elif expiry_year == current_year:
+        if not expiry_month >= current_month :
+            return False, "Invalid Expiry"
 
 
-
+    
 
 #Checking digits of CVV
     
@@ -55,8 +47,26 @@ def process_payment(card_num, expiry, cvv, amount, expiry_year, expiry_month, cu
     else:
        return True, "Payment Approved"
 
+ # TODO: Deduct quantity from backend.MOVIES_DATA
 
+def update_inventory(movie_title, quantity, requested_session):  
+    movie = None
+    for m in backend.MOVIES_DATA:
+        if m["title"] == movie_title:
+            movie = m
+            break
+    if movie is None:
+       return False, f"Error updating inventory, {movie_title} not found."
 
-def update_inventory(movie_title, quantity):
-       # TODO: Deduct quantity from backend.MOVIES_DATA
-       return True
+    session = None
+    for s in movie["sessions"]:
+        if s["session_id"] == requested_session:
+            session = s
+            break
+
+    if session is None:
+           return False, f"Error updating inventory, {requested_session} not found."
+
+    session["tickets_remaining"] -= quantity
+
+    return True, "Inventory successfully updated"
