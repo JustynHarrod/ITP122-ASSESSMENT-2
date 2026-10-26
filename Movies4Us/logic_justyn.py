@@ -76,7 +76,7 @@ def initialize_random_sales():
                      total_tickets_sold += tickets_sold
                      # Randomly split those sold tickets among Adult, Child, and Concession
                      for _ in range(tickets_sold):
-                            ticket_type = random.choices(["Adult", "Child", "Concession"])
+                            ticket_type = random.choice(["Adult", "Child", "Concession"]) # Use random.choice instead of choices
                             # Find and increment the corresponding sales history entry
                             for entry in backend.SALES_HISTORY:
                                    if entry["type"] == ticket_type:

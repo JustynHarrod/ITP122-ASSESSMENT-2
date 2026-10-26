@@ -4,6 +4,7 @@ import backend, logic_justyn
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import sys
+import random
 
 ctk.set_appearance_mode("Dark")
 ctk.set_default_color_theme("dark-blue")
@@ -113,9 +114,13 @@ class MovieAvailabilityWidget(ctk.CTkFrame):
         occ_text = f"Overall Occupancy Rate: {occupancy_rate:.1f}%"
         occ_label = ctk.CTkLabel(occupancy_card, text=occ_text, font=("Arial", 14, "bold"), text_color="#f59e0b")
         occ_label.grid(row=0, column=0, padx=15, pady=12)
-        adults = int(total_sold * 0.6)
-        children = int(total_sold * 0.2)
-        concessions = total_sold - adults - children  
+        a_pct = random.uniform(0.35, 0.70)
+        c_pct = random.uniform(0.10, 0.40)
+        co_pct = max(0.0, 1.0 - (a_pct + c_pct))
+        norm = a_pct + c_pct + co_pct
+        adults = int(total_sold * (a_pct / norm))
+        children = int(total_sold * (c_pct / norm))
+        concessions = total_sold - adults - children
         labels = ['Adult', 'Child', 'Conc.']
         sizes = [max(0, adults), max(0, children), max(0, concessions)]
         colors = ['#f59e0b', '#3b82f6', '#10b981']
