@@ -50,19 +50,11 @@ def process_payment(card_num, expiry, cvv):
  # TODO: Deduct quantity from backend.MOVIES_DATA
 
 def update_inventory(movie_title, quantity, requested_session):  
-    movie = None
-    for m in backend.MOVIES_DATA:
-        if m["title"] == movie_title:
-            movie = m
-            break
+    movie = next((m for m in backend.MOVIES_DATA if m["title"] == movie_title), None)
     if movie is None:
        return False, f"Error updating inventory, {movie_title} not found."
 
-    session = None
-    for s in movie["sessions"]:
-        if s["session_id"] == requested_session:
-            session = s
-            break
+    session = next((s for s in movie["sessions"] if s["session_id"] == requested_session), None)
 
     if session is None:
            return False, f"Error updating inventory, {requested_session} not found."
