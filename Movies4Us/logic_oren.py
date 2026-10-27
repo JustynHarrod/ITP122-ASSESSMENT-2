@@ -28,11 +28,6 @@ def check_availability(movie_title, requested_session, requested_seats):
        if requested_seats <= session["tickets_remaining"]:
               return True ## f"Seats available for {movie_title} in {requested_session}."
 
-print(check_availability("Street Fighter", 104, 50))
-print(check_availability("The Odyssey", 801, 50))
-print(check_availability("Street Fighter", 140, 50))
-print(check_availability("Avatar", 154, 50))
-
 # def for sale_data for project.
 def record_sale(sale_data, quantity):
        """Function gives specified ticket price for each category, "Adult", 5 tickets = $75.00 
@@ -52,7 +47,3 @@ price_child = record_sale("child", 1000)
 price_concession = record_sale("concession", 10)
 if price is not None:
        print (f"Price of ticket: ${price:.2f}") 
-
-print(f"Adult tickets: ${price_adult:,.2f}")
-print(f"Child tickets: ${price_child:,.2f}")
-print(f"Concession tickets: ${price_concession:,.2f}")
