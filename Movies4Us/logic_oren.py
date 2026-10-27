@@ -1,3 +1,4 @@
+from backend import *
 import backend
 
 # def for check_availability for project.
@@ -6,7 +7,7 @@ def check_availability(movie_title, requested_session, requested_seats):
        Returns back with print with message. """
        # for loop to check backend.MOVIES_DATA for titles to check if title exists.
        movie = None
-       for m in backend.MOVIES_DATA:
+       for m in MOVIES_DATA:
               if m["title"] == movie_title:
                      movie = m
                      break
@@ -37,7 +38,7 @@ def record_sale(sale_data, quantity):
        """Function gives specified ticket price for each category, "Adult", 5 tickets = $75.00 
         Returns Price of ticket. """
        # for loop to check p = price in sales history.
-       for p in backend.SALES_HISTORY:
+       for p in SALES_HISTORY:
               if p.get ("type", "").lower().strip() == sale_data.lower().strip():
                      return backend.PRICES[sale_data.strip().title()] * quantity
        # runs if it cannot find sale type.
