@@ -44,4 +44,4 @@ price_adult = record_sale("adult", 2)
 price_child = record_sale("child", 1000)
 price_concession = record_sale("concession", 10)
 if price is not None:
-       print (f"Price of ticket: ${price:.2f}") 
+       print (f"Price of ticket: ${price:,.2f}") 
