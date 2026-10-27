@@ -36,8 +36,6 @@ def record_sale(sale_data, quantity):
        for p in SALES_HISTORY:
               if p.get ("type", "").lower().strip() == sale_data.lower().strip():
                      return PRICES[sale_data.strip().title()] * quantity
-       # runs if it cannot find sale type.
-       print("Sale not found")
        return None
 
 # call to price to test.
