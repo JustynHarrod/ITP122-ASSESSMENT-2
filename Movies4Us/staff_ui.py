@@ -1,6 +1,7 @@
 import customtkinter as ctk
 from PIL import Image
-import backend, logic_justyn
+from backend import *
+from logic_justyn import *
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import sys
@@ -58,7 +59,7 @@ class MovieAvailabilityWidget(ctk.CTkFrame):
 
     def create_movie_tabs(self):
         """Creates clickable buttons at the top for each movie."""
-        for index, movie in enumerate(backend.MOVIES_DATA):
+        for index, movie in enumerate(MOVIES_DATA):
             btn = ctk.CTkButton(self.nav_frame, text=movie["title"], font=("Arial", 12), fg_color="#2b2f38", hover_color="#3a3f4b", text_color="#ffffff", height=30, command=lambda idx=index: self.switch_movie(idx))
             btn.pack(side="left", padx=4)
 
@@ -73,7 +74,7 @@ class MovieAvailabilityWidget(ctk.CTkFrame):
         """Clears and re-builds session bars, occupancy stats, and the movie-specific pie chart."""
         for widget in self.left_sub.winfo_children():
             widget.destroy()
-        movie = backend.MOVIES_DATA[index]
+        movie = MOVIES_DATA[index]
         total_capacity = sum(s["capacity"] for s in movie["sessions"])
         total_remaining = sum(s["tickets_remaining"] for s in movie["sessions"])
         total_sold = total_capacity - total_remaining
@@ -157,7 +158,7 @@ class MoviePosterWidget(ctk.CTkFrame):
         """Loads and scales the poster image to fill ~90% of the display area."""
         for widget in self.display_frame.winfo_children():
             widget.destroy()
-        movie = backend.MOVIES_DATA[index]
+        movie = MOVIES_DATA[index]
         try:
             pil_img = Image.open(movie["poster"])
             movie_image = ctk.CTkImage(light_image=pil_img, dark_image=pil_img, size=(240, 340))
@@ -179,12 +180,12 @@ class StaffDashboardWindow(ctk.CTk):
         self.geometry("1280x900")
         self.configure(fg_color="#0f1117")
         self.protocol("WM_DELETE_WINDOW", self.on_close)
-        logic_justyn.initialize_random_sales()
+        initialize_random_sales()
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(0, weight=0) # Header
         self.grid_rowconfigure(1, weight=0) # Metrics
         self.grid_rowconfigure(2, weight=1) # Row 2 Content
-        self.report_data = logic_justyn.generate_sales_report()
+        self.report_data = generate_sales_report()
         self.create_header()
         self.create_metrics_grid()
         self.create_row_two()
@@ -202,7 +203,7 @@ class StaffDashboardWindow(ctk.CTk):
         grid_frame = ctk.CTkFrame(self, fg_color="transparent")
         grid_frame.grid(row=1, column=0, sticky="new", padx=40, pady=10)
         grid_frame.grid_columnconfigure((0, 1, 2, 3), weight=1, uniform="col")
-        card_sold = MetricCard(grid_frame, title="Tickets Sold", value=self.report_data["total_sales"], subtitle=f"Across {sum(len(m['sessions']) for m in backend.MOVIES_DATA)} screenings of {len(backend.MOVIES_DATA)} movies")
+        card_sold = MetricCard(grid_frame, title="Tickets Sold", value=self.report_data["total_sales"], subtitle=f"Across {sum(len(m['sessions']) for m in MOVIES_DATA)} screenings of {len(MOVIES_DATA)} movies")
         card_sold.grid(row=0, column=0, sticky="nsew", padx=(0, 10))
         formatted_revenue = f"${self.report_data['revenue']:,.0f}"
         card_rev = MetricCard(grid_frame, title="Ticket Revenue", value=formatted_revenue, subtitle=f"Avg: ${self.report_data['average_ticket_price']:.2f}")
