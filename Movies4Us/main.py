@@ -4,7 +4,6 @@ from backend import *
 from logic_justyn import *
 from logic_oren import *
 from logic_james import *
-from logic_wayne import *
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import sys
