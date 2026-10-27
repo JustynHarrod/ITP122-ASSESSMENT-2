@@ -4,12 +4,17 @@ import backend
 def process_payment(card_num, expiry, cvv):
 
 
+#Accounting for edge cases in which users add spaces when entering a space in the card number entry field
+    card_num = card_num.replace(" ", "")
 
 #Checking digits of card number
 
     if len(card_num) != 16 or not card_num.isdigit():
        return False, "Invalid Card Number"
 
+
+#Accounting for edge cases in which users add a "/" when entering their card expiry
+    expiry = expiry.replace("/", "")
 
 #Checking digits of expiry
     
