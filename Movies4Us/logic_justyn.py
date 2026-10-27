@@ -1,4 +1,5 @@
 import backend
+import random
 
 def generate_sales_report():
        """Generates an aggregated sales report. 
@@ -19,7 +20,10 @@ def generate_sales_report():
        least_sold = None
        # First pass: determine the maximum and minimum ticket sales thresholds
        for movie in backend.MOVIES_DATA:
-              sold = movie["capacity"] - movie["tickets_remaining"]
+              sold = sum(
+                     session["capacity"] - session["tickets_remaining"]
+                     for session in movie["sessions"]
+              )
               if sold > most_sold:
                      most_sold = sold
               if least_sold is None or sold < least_sold:
@@ -28,7 +32,10 @@ def generate_sales_report():
        lowest_movies = []
        # Second pass: capture all titles matching thresholds (handles multi-movie ties)
        for movie in backend.MOVIES_DATA:
-              sold = movie["capacity"] - movie["tickets_remaining"]
+              sold = sum(
+                     session["capacity"] - session["tickets_remaining"]
+                     for session in movie["sessions"]
+              )
               if sold == most_sold:
                      top_movies.append(movie["title"])
               if sold == least_sold:
@@ -53,4 +60,24 @@ def calculate_revenue():
            total += price * sale["amount"]      
        return total
 
-print(generate_sales_report())
+def initialize_random_sales():
+       """Randomly populates session ticket sales and ticket type distributions on launch."""
+       # Reset sales history first to prevent stacking if re-initialized
+       for item in backend.SALES_HISTORY:
+              item["amount"] = 0
+       total_tickets_sold = 0
+       for movie in backend.MOVIES_DATA:
+              for session in movie["sessions"]:
+                     # Decide how many tickets to sell for this session (e.g., between 0 and 45 out of 50 capacity)
+                     capacity = session["capacity"]
+                     tickets_sold = random.randint(2, 42) if random.random() > 0.1 else 0 # 10% chance of a completely empty session
+                     # Update session remaining tickets
+                     session["tickets_remaining"] = max(0, capacity - tickets_sold)
+                     total_tickets_sold += tickets_sold
+                     # Randomly split those sold tickets among Adult, Child, and Concession
+                     for _ in range(tickets_sold):
+                            ticket_type = random.choice(["Adult", "Child", "Concession"]) # Use random.choice instead of choices
+                            # Find and increment the corresponding sales history entry
+                            for entry in backend.SALES_HISTORY:
+                                   if entry["type"] == ticket_type:
+                                          entry["amount"] += 1
