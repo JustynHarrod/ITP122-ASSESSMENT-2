@@ -3,7 +3,7 @@ import backend
 # def for check_availability for project.
 def check_availability(movie_title, requested_session, requested_seats):
        """The Function checks availability for movie, the session and then seats, print(check_availability("Movie", 104 session, 50 seats)).      
-       Returns a True or false for seats. """
+       Returns back with print with message. """
        # for loop to check backend.MOVIES_DATA for titles to check if title exists.
        movie = None
        for m in backend.MOVIES_DATA:
@@ -11,7 +11,7 @@ def check_availability(movie_title, requested_session, requested_seats):
                      movie = m
                      break
        if movie is None:
-              return False, f"Error: {movie_title} doesn't exist in backend data."
+              return f"Error: {movie_title} doesn't exist in backend data."
        session = None
        for s in movie["sessions"]:
               if s["session_id"] == requested_session:
@@ -19,13 +19,13 @@ def check_availability(movie_title, requested_session, requested_seats):
                      break
        # backup if movie doesn't exist.
        if session is None:
-              return False, f"Error: Session {requested_session}, not available for {movie_title}"
+              return f"Error: Session {requested_session}, not available for {movie_title}"
        # if users requests 80 seats for and it's more than what remains it will tell users that not enough seats.
        if requested_seats > session["tickets_remaining"]:
-              return False, f"Error: {movie_title} doesn't have enough seats available."
+              return f"Error: {movie_title} doesn't have enough seats available."
        # if users requests seat and they are availble.
        if requested_seats <= session["tickets_remaining"]:
-              return True, f"Seats available for {movie_title} in {requested_session}."
+              return f"Seats available for {movie_title} in {requested_session}."
 
 print(check_availability("Street Fighter", 104, 50))
 print(check_availability("The Odyssey", 801, 50))
@@ -41,7 +41,7 @@ def record_sale(sale_data, quantity):
               if p.get ("type", "").lower().strip() == sale_data.lower().strip():
                      return backend.PRICES[sale_data.strip().title()] * quantity
        # runs if it cannot find sale type.
-       print("Sale not Found")
+       print("Sale not found")
        return None
 
 # call to price to test.
