@@ -40,7 +40,7 @@ def record_sale(sale_data, quantity):
        # for loop to check p = price in sales history.
        for p in SALES_HISTORY:
               if p.get ("type", "").lower().strip() == sale_data.lower().strip():
-                     return backend.PRICES[sale_data.strip().title()] * quantity
+                     return PRICES[sale_data.strip().title()] * quantity
        # runs if it cannot find sale type.
        print("Sale not found")
        return None
