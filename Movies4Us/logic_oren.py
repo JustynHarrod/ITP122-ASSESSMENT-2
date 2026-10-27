@@ -12,7 +12,7 @@ def check_availability(movie_title, requested_session, requested_seats):
                      movie = m
                      break
        if movie is None:
-              return f"Error: {movie_title} doesn't exist in backend data."
+              return False ## f"Error: {movie_title} doesn't exist in backend data."
        session = None
        for s in movie["sessions"]:
               if s["session_id"] == requested_session:
@@ -20,13 +20,13 @@ def check_availability(movie_title, requested_session, requested_seats):
                      break
        # backup if movie doesn't exist.
        if session is None:
-              return f"Error: Session {requested_session}, not available for {movie_title}"
+              return False ## f"Error: Session {requested_session}, not available for {movie_title}"
        # if users requests 80 seats for and it's more than what remains it will tell users that not enough seats.
        if requested_seats > session["tickets_remaining"]:
-              return f"Error: {movie_title} doesn't have enough seats available."
+              return False ## f"Error: {movie_title} doesn't have enough seats available."
        # if users requests seat and they are availble.
        if requested_seats <= session["tickets_remaining"]:
-              return f"Seats available for {movie_title} in {requested_session}."
+              return True ## f"Seats available for {movie_title} in {requested_session}."
 
 print(check_availability("Street Fighter", 104, 50))
 print(check_availability("The Odyssey", 801, 50))
