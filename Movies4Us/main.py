@@ -335,7 +335,7 @@ class MainDashboard(ctk.CTk):
         plt.close("all")
         self.destroy()
     def open_staff_portal(self):
-        """Opens the staff interface if staff_ui.py exists."""
+        """Opens the staff interface."""
         staff_ui_path = os.path.join(
         os.path.dirname(os.path.abspath(__file__)),
         "staff_ui.py"
