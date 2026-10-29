@@ -121,7 +121,7 @@ MOVIES_DATA = [
     },
         {
         "id": 9,
-        "title": "The Hunger Games Sunrise on the Reaping",
+        "title": "The Hunger Games: Sunrise on the Reaping",
         "genre": "Adventure",
         "rating": "M (Not-rated at this time)",
         "runtime": "158",
