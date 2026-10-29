@@ -15,47 +15,21 @@ ctk.set_default_color_theme("dark-blue")
 class MetricCard(ctk.CTkFrame):
     """This class created the poster, movie title and rating in the button for selecting."""
     def __init__(self, master, movie, command=None):
-        super().__init__(
-            master,
-            fg_color="#1a1d24",
-            corner_radius=10,
-            border_width=2,
-            border_color="#2b2f38"
-        )
+        super().__init__(master, fg_color="#1a1d24", corner_radius=10, border_width=2, border_color="#2b2f38")
         self.movie = movie
         self.command = command
         self.poster_image = None
         self.grid_columnconfigure(0, weight=1)
         try:
             pil_img = Image.open(movie["poster"]).convert("RGB")
-            self.poster_image = ctk.CTkImage(
-                light_image=pil_img,
-                dark_image=pil_img,
-                size=(150, 210)
-            )
+            self.poster_image = ctk.CTkImage(light_image=pil_img, dark_image=pil_img, size=(150, 210))
             poster_label = ctk.CTkLabel(self, text="", image=self.poster_image)
         except (FileNotFoundError, OSError, KeyError):
-            poster_label = ctk.CTkLabel(
-                self,
-                text="No poster found",
-                text_color="#8a93a0",
-                height=210
-            )
+            poster_label = ctk.CTkLabel(self, text="No poster found", text_color="#8a93a0", height=210)
         poster_label.grid(row=0, column=0, padx=8, pady=(8, 4))
-        title_label = ctk.CTkLabel(
-            self,
-            text=movie.get("title", "Unknown movie"),
-            font=("Arial", 13, "bold"),
-            text_color="#ffffff",
-            wraplength=160
-        )
+        title_label = ctk.CTkLabel(self, text=movie.get("title", "Unknown movie"), font=("Arial", 13, "bold"), text_color="#ffffff", wraplength=160)
         title_label.grid(row=1, column=0, padx=5, pady=4)
-        rating_label = ctk.CTkLabel(
-            self,
-            text=f"Rating: {movie.get('rating', 'N/A')}",
-            font=("Arial", 11),
-            text_color="#8a93a0"
-        )
+        rating_label = ctk.CTkLabel(self,text=f"Rating: {movie.get('rating', 'N/A')}", font=("Arial", 11), text_color="#8a93a0")
         rating_label.grid(row=2, column=0, pady=(0, 10))
         # Makes the poster and its details clickable.
         for widget in (self, poster_label, title_label, rating_label):
@@ -87,83 +61,32 @@ class MovieInfoPopup(ctk.CTkToplevel):
         self.grid_rowconfigure(0, weight=1)
         try:
             pil_img = Image.open(movie["poster"]).convert("RGB")
-            self.poster_image = ctk.CTkImage(
-                light_image=pil_img,
-                dark_image=pil_img,
-                size=(220, 320)
-            )
+            self.poster_image = ctk.CTkImage(light_image=pil_img, dark_image=pil_img, size=(220, 320))
             poster_label = ctk.CTkLabel(self, text="", image=self.poster_image)
         except (FileNotFoundError, OSError, KeyError):
-            poster_label = ctk.CTkLabel(
-                self,
-                text="No poster found",
-                text_color="#8a93a0",
-                width=220,
-                height=320
-            )
+            poster_label = ctk.CTkLabel(self, text="No poster found", text_color="#8a93a0", width=220, height=320)
         poster_label.grid(row=0, column=0, padx=25, pady=25, sticky="n")
         details = ctk.CTkFrame(self, fg_color="transparent")
         details.grid(row=0, column=1, padx=(0, 25), pady=25, sticky="nsew")
         details.grid_columnconfigure(0, weight=1)
-        ctk.CTkLabel(
-            details,
-            text=movie.get("title", "Unknown movie"),
-            font=("Arial", 22, "bold"),
-            text_color="#ffffff",
-            wraplength=530
-        ).grid(row=0, column=0, sticky="w", pady=(0, 12))
-        ctk.CTkLabel(
-            details,
-            text=f"Rating: {movie.get('rating', 'N/A')}",
-            font=("Arial", 14),
-            text_color="#8a93a0"
-        ).grid(row=1, column=0, sticky="w", pady=4)
+        ctk.CTkLabel(details, text=movie.get("title", "Unknown movie"), font=("Arial", 22, "bold"), text_color="#ffffff", wraplength=530).grid(row=0, column=0, sticky="w", pady=(0, 12))
+        ctk.CTkLabel(details, text=f"Rating: {movie.get('rating', 'N/A')}", font=("Arial", 14), text_color="#8a93a0").grid(row=1, column=0, sticky="w", pady=4)
         if movie.get("genre"):
-            ctk.CTkLabel(
-                details, text=f"Genre: {movie['genre']}",
-                font=("Arial", 14), text_color="#8a93a0"
-            ).grid(row=2, column=0, sticky="w", pady=4)
+            ctk.CTkLabel(details, text=f"Genre: {movie['genre']}", font=("Arial", 14), text_color="#8a93a0").grid(row=2, column=0, sticky="w", pady=4)
         if movie.get("runtime"):
-            ctk.CTkLabel(
-                details, text=f"Duration: {movie['runtime']} minutes",
-                font=("Arial", 14), text_color="#8a93a0"
-            ).grid(row=3, column=0, sticky="w", pady=4)
+            ctk.CTkLabel(details, text=f"Duration: {movie['runtime']} minutes", font=("Arial", 14), text_color="#8a93a0").grid(row=3, column=0, sticky="w", pady=4)
         session_list = movie.get("sessions", [])
         session_time = ", ".join(
         session["time"] for session in session_list if "time" in session
         ) if session_list else "No times available"
-        ctk.CTkLabel(
-            details,
-            text=f"Sessions available: {session_time}",
-            font=("Arial", 14),
-            text_color="#8a93a0"
-            ).grid(row=4, column=0, sticky="w", pady=4)
+        ctk.CTkLabel(details, text=f"Sessions available: {session_time}", font=("Arial", 14), text_color="#8a93a0").grid(row=4, column=0, sticky="w", pady=4)
         description = movie.get("description", "")
         if description:
-            ctk.CTkLabel(
-            details,
-            text=description,
-            font=("Arial", 13),
-            text_color="#ffffff",
-            wraplength=950,
-            justify="left"
-        ).grid(row=5, column=0, sticky="w", pady=(12, 15))
+            ctk.CTkLabel(details, text=description, font=("Arial", 13), text_color="#ffffff", wraplength=950, justify="left").grid(row=5, column=0, sticky="w", pady=(12, 15))
         buttons = ctk.CTkFrame(details, fg_color="transparent")
         buttons.grid(row=6, column=0, sticky="ew", pady=(20, 0))
-        ctk.CTkButton(
-            buttons,
-            text="Continue to Checkout",
-            fg_color="#f59e0b",
-            hover_color="#8b5800",
-            command=self.checkout
-        ).pack(fill="x", pady=(0, 10))
-        ctk.CTkButton(
-            buttons,
-            text="Back to Movies",
-            fg_color="#2b2f38",
-            hover_color="#3a3f4b",
-            command=self.destroy
-        ).pack(fill="x")
+        ctk.CTkButton(buttons, text="Continue to Checkout", fg_color="#f59e0b", hover_color="#8b5800", command=self.checkout).pack(fill="x", pady=(0, 10))
+        ctk.CTkButton(buttons, text="Back to Movies", fg_color="#2b2f38", hover_color="#3a3f4b", command=self.destroy).pack(fill="x")
 
     def checkout(self):
         """Runs the checkout callback and closes the popup."""
@@ -188,67 +111,25 @@ class MainDashboard(ctk.CTk):
         self.create_metrics_grid()
     def create_header(self):
         """Creates the heading at the top of the window."""
-        header_frame = ctk.CTkFrame(
-            self, fg_color="transparent"
-        )
-        header_frame.grid(
-            row=0, column=0, sticky="ew", padx=40, pady=(30, 20)
-        )
-        title = ctk.CTkLabel(
-            header_frame,
-            text="Movies4Us - Movie Selection Portal - Melbourne Cinema",
-            font=("Arial", 26, "bold"),
-            text_color="#ffffff"
-        )
+        header_frame = ctk.CTkFrame(self, fg_color="transparent")
+        header_frame.grid(row=0, column=0, sticky="ew", padx=40, pady=(30, 20))
+        title = ctk.CTkLabel(header_frame, text="Movies4Us - Movie Selection Portal - Melbourne Cinema", font=("Arial", 26, "bold"), text_color="#ffffff")
         title.pack()
-        subtitle = ctk.CTkLabel(
-            header_frame,
-            text="Choose a movie to get started today.",
-            font=("Arial", 13),
-            text_color="#8a93a0"
-        )
+        subtitle = ctk.CTkLabel(header_frame, text="Choose a movie to get started today.", font=("Arial", 13), text_color="#8a93a0")
         subtitle.pack(pady=(5, 0))
-        staff_button = ctk.CTkButton(
-        header_frame,
-        text="Staff Login",
-        font=("Arial", 13, "bold"),
-        width=100,
-        height=35,
-        fg_color="#f59e0b",
-        hover_color="#915d04",
-        text_color="#ffffff",
-        corner_radius=8,
-        command=self.open_staff_portal
-    )
+        staff_button = ctk.CTkButton(header_frame, text="Staff Login", font=("Arial", 13, "bold"), width=100, height=35, fg_color="#f59e0b", hover_color="#915d04", text_color="#ffffff", corner_radius=8, command=self.open_staff_portal)
         staff_button.place(relx=1.0, y=0, anchor="ne")
     def create_metrics_grid(self):
         """Creates the grid of clickable movie posters."""
-        grid_frame = ctk.CTkScrollableFrame(
-            self,
-            fg_color="transparent"
-        )
-        grid_frame.grid(
-            row=1, column=0, sticky="nsew", padx=40, pady=(0, 30)
-        )
+        grid_frame = ctk.CTkScrollableFrame(self, fg_color="transparent")
+        grid_frame.grid(row=1, column=0, sticky="nsew", padx=40, pady=(0, 30))
         for col in range(4):
-            grid_frame.grid_columnconfigure(
-                col, weight=1, uniform="col"
-            )
+            grid_frame.grid_columnconfigure(col, weight=1, uniform="col")
         for index, movie in enumerate(MOVIES_DATA):
             row = index // 4
             col = index % 4
-            card = MetricCard(
-                grid_frame,
-                movie=movie,
-                command=lambda idx=index: self.select_movie(idx)
-            )
-            card.grid(
-                row=row,
-                column=col,
-                sticky="n",
-                padx=10,
-                pady=10
-            )
+            card = MetricCard(grid_frame, movie=movie, command=lambda idx=index: self.select_movie(idx))
+            card.grid(row=row, column=col, sticky="n", padx=10, pady=10)
             self.movie_cards.append(card)
     def select_movie(self, index):
         """Opens the information popup for the selected movie."""
@@ -264,15 +145,9 @@ class MainDashboard(ctk.CTk):
         MovieInfoPopup(self, movie, on_checkout=self.open_checkout)
     def open_checkout(self, movie):
         """Opens the customer checkout interface."""
-        customer_ui_path = os.path.join(
-            os.path.dirname(os.path.abspath(__file__)),
-            "customer_ui.py"
-        )
+        customer_ui_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "customer_ui.py")
         try:
-            subprocess.Popen([
-                sys.executable,
-                customer_ui_path
-            ])
+            subprocess.Popen([sys.executable, customer_ui_path])
         except OSError as error:
             print(f"Could not open checkout: {error}")
     def on_close(self):
@@ -281,15 +156,9 @@ class MainDashboard(ctk.CTk):
         self.destroy()
     def open_staff_portal(self):
         """Opens the staff interface."""
-        staff_ui_path = os.path.join(
-        os.path.dirname(os.path.abspath(__file__)),
-        "staff_ui.py"
-        )
+        staff_ui_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "staff_ui.py")
         try:
-            subprocess.Popen([
-                sys.executable,
-                staff_ui_path
-            ])
+            subprocess.Popen([sys.executable, staff_ui_path])
         except OSError as error:
             print(f"Could not open staff ui: {error}")
 
