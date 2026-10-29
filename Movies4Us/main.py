@@ -7,68 +7,13 @@ from logic_james import *
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import sys
-import random
 import subprocess
 import os
 ctk.set_appearance_mode("Dark")
 ctk.set_default_color_theme("dark-blue")
 
-class MoviePosterWidget(ctk.CTkFrame):
-    """Displays the selected movie poster."""
-    def __init__(self, master):
-        super().__init__(master, fg_color="#1a1d24", corner_radius=10)
-        self.grid_columnconfigure(0, weight=1)
-        self.grid_rowconfigure(1, weight=1)
-        title_label = ctk.CTkLabel(
-            self,
-            text="Selected Movie",
-            font=("Arial", 16, "bold"),
-            text_color="#ffffff"
-        )
-        title_label.grid(row=0, column=0, pady=(20, 10))
-        self.display_frame = ctk.CTkFrame(
-            self, fg_color="transparent"
-        )
-        self.display_frame.grid(
-            row=1, column=0, sticky="nsew", padx=20, pady=(0, 20)
-        )
-        self.display_frame.grid_columnconfigure(0, weight=1)
-        self.poster_image = None
-    def update_poster(self, index):
-        """Updates the poster when a movie is selected."""
-        for widget in self.display_frame.winfo_children():
-            widget.destroy()
-        movie = MOVIES_DATA[index]
-        try:
-            pil_img = Image.open(movie["poster"]).convert("RGB")
-            self.poster_image = ctk.CTkImage(
-                light_image=pil_img,
-                dark_image=pil_img,
-                size=(240, 340)
-            )
-            img_label = ctk.CTkLabel(
-                self.display_frame,
-                text="",
-                image=self.poster_image
-            )
-            img_label.grid(row=0, column=0, pady=5)
-        except (FileNotFoundError, OSError):
-            img_label = ctk.CTkLabel(
-                self.display_frame,
-                text=f"No poster found\n{movie['title']}",
-                text_color="#ffffff"
-            )
-            img_label.grid(row=0, column=0, pady=5)
-        meta_label = ctk.CTkLabel(
-            self.display_frame,
-            text=f"{movie['title']} ({movie['rating']})",
-            font=("Arial", 14, "bold"),
-            text_color="#ffffff"
-        )
-        meta_label.grid(row=1, column=0, pady=(10, 0))
-
 class MetricCard(ctk.CTkFrame):
-    """Movie card displaying a poster, title and rating."""
+    """This class created the poster, movie title and rating in the button for selecting."""
     def __init__(self, master, movie, command=None):
         super().__init__(
             master,
@@ -118,7 +63,7 @@ class MetricCard(ctk.CTkFrame):
             widget.bind("<Enter>", self.on_enter)
             widget.bind("<Leave>", self.on_leave)
     def select_movie(self, event=None):
-        """Runs when the movie card is clicked."""
+        """Select movie event."""
         if self.command:
             self.command()
     def on_enter(self, event=None):
@@ -127,7 +72,7 @@ class MetricCard(ctk.CTkFrame):
         self.configure(border_color="#2b2f38")
 
 class MovieInfoPopup(ctk.CTkToplevel):
-    """Popup showing details for the selected movie."""
+    """This class is for the popup information after user selects the movie."""
     def __init__(self, master, movie, on_checkout=None):
         super().__init__(master)
         self.movie = movie
@@ -227,7 +172,7 @@ class MovieInfoPopup(ctk.CTkToplevel):
         self.destroy()
 
 class MainDashboard(ctk.CTk):
-    """Main movie selection window."""
+    """Full main dashboard class, to create the prereq for header, background and window."""
     def __init__(self):
         super().__init__()
         self.title("Movies4Us - Movie Selection - Melbourne Cinema")
