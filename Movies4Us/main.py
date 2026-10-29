@@ -235,7 +235,7 @@ class MovieInfoPopup(ctk.CTkToplevel):
             text=movie.get("title", "Unknown movie"),
             font=("Arial", 22, "bold"),
             text_color="#ffffff",
-            wraplength=330
+            wraplength=530
         ).grid(row=0, column=0, sticky="w", pady=(0, 12))
         ctk.CTkLabel(
             details,
