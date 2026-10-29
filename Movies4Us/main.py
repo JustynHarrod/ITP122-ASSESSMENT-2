@@ -189,7 +189,7 @@ class MovieInfoPopup(ctk.CTkToplevel):
         ) if session_list else "No times available"
         ctk.CTkLabel(
             details,
-            text=f"Sessions Available: {session_time}",
+            text=f"Sessions available: {session_time}",
             font=("Arial", 14),
             text_color="#8a93a0"
             ).grid(row=4, column=0, sticky="w", pady=4)

@@ -128,9 +128,6 @@ MOVIES_DATA = [
         "poster": "",
         "description": "The Hunger Games: Sunrise on the Reaping takes you back to the dangerous world of Panem, 24 years before Katniss Everdeen’s story. When young Haymitch Abernathy is selected for the brutal 50th Hunger Games, he’s thrown into a deadly competition where twice as many tributes must fight to survive. Facing ruthless opponents, cruel Capitol rules and an arena designed to test his limits, Haymitch must find the strength to fight back against a system determined to destroy him. Packed with intense action, suspense, betrayal and emotional moments, this is a must-see for Hunger Games fans!",
         "sessions": [
-            {"session_id": 805, "time": "6:00 PM", "capacity": 50, "tickets_remaining": 50},
-            {"session_id": 806, "time": "9:00 PM", "capacity": 50, "tickets_remaining": 50},
-            {"session_id": 807, "time": "11:00 PM", "capacity": 50, "tickets_remaining": 50},
         ]
     }
 ]
