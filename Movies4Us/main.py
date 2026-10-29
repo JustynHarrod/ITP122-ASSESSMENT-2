@@ -144,7 +144,7 @@ class MainDashboard(ctk.CTk):
                 card.configure(border_color="#2b2f38")
         MovieInfoPopup(self, movie, on_checkout=self.open_checkout)
     def open_checkout(self, movie):
-        """Opens the customer checkout interface."""
+        """Opens the customer checkout interface from customer ui.py file."""
         customer_ui_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "customer_ui.py")
         try:
             subprocess.Popen([sys.executable, customer_ui_path])
@@ -155,7 +155,7 @@ class MainDashboard(ctk.CTk):
         plt.close("all")
         self.destroy()
     def open_staff_portal(self):
-        """Opens the staff interface."""
+        """Opens the staff ui.py file (temp) until popout for staff login."""
         staff_ui_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "staff_ui.py")
         try:
             subprocess.Popen([sys.executable, staff_ui_path])
