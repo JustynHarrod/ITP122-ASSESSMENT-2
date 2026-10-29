@@ -192,7 +192,7 @@ class MetricCard(ctk.CTkFrame):
         if self.command:
             self.command()
     def on_enter(self, event=None):
-        self.configure(border_color="#3b82f6")
+        self.configure(border_color="#f59e0b")
     def on_leave(self, event=None):
         self.configure(border_color="#2b2f38")
 
@@ -278,6 +278,8 @@ class MovieInfoPopup(ctk.CTkToplevel):
         ctk.CTkButton(
             buttons,
             text="Continue to Checkout",
+            fg_color="#f59e0b",
+            hover_color="#8b5800",
             command=self.checkout
         ).pack(fill="x", pady=(0, 10))
         ctk.CTkButton(
@@ -319,14 +321,14 @@ class MainDashboard(ctk.CTk):
         )
         title = ctk.CTkLabel(
             header_frame,
-            text="Movie Selection Portal",
+            text="Movies4Us - Movie Selection Portal - Melbourne Cinema",
             font=("Arial", 26, "bold"),
             text_color="#ffffff"
         )
         title.pack()
         subtitle = ctk.CTkLabel(
             header_frame,
-            text="Choose a movie to get started",
+            text="Choose a movie to get started today.",
             font=("Arial", 13),
             text_color="#8a93a0"
         )
@@ -337,8 +339,8 @@ class MainDashboard(ctk.CTk):
         font=("Arial", 13, "bold"),
         width=100,
         height=35,
-        fg_color="#e0f900",
-        hover_color="#7e9700",
+        fg_color="#f59e0b",
+        hover_color="#915d04",
         text_color="#ffffff",
         corner_radius=8,
         command=self.open_staff_portal
@@ -381,7 +383,7 @@ class MainDashboard(ctk.CTk):
         movie = MOVIES_DATA[index]
         for i, card in enumerate(self.movie_cards):
             if i == index:
-                card.configure(border_color="#3b82f6")
+                card.configure(border_color="#f59e0b")
             else:
                 card.configure(border_color="#2b2f38")
         MovieInfoPopup(self, movie, on_checkout=self.open_checkout)
