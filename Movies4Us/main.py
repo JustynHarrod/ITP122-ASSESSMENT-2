@@ -331,6 +331,19 @@ class MainDashboard(ctk.CTk):
             text_color="#8a93a0"
         )
         subtitle.pack(pady=(5, 0))
+        staff_button = ctk.CTkButton(
+        header_frame,
+        text="Staff Login",
+        font=("Arial", 13, "bold"),
+        width=100,
+        height=35,
+        fg_color="#e0f900",
+        hover_color="#7e9700",
+        text_color="#ffffff",
+        corner_radius=8,
+        command=self.open_staff_portal
+    )
+        staff_button.place(relx=1.0, y=0, anchor="ne")
     def create_metrics_grid(self):
         """Creates the grid of clickable movie posters."""
         grid_frame = ctk.CTkScrollableFrame(
@@ -378,9 +391,6 @@ class MainDashboard(ctk.CTk):
             os.path.dirname(os.path.abspath(__file__)),
             "customer_ui.py"
         )
-        if not os.path.exists(customer_ui_path):
-            print("Error: customer_ui.py could not be found.")
-            return
         try:
             subprocess.Popen([
                 sys.executable,
@@ -392,6 +402,19 @@ class MainDashboard(ctk.CTk):
         """Closes the application."""
         plt.close("all")
         self.destroy()
+    def open_staff_portal(self):
+        """Opens the staff interface if staff_ui.py exists."""
+        staff_ui_path = os.path.join(
+        os.path.dirname(os.path.abspath(__file__)),
+        "staff_ui.py"
+        )
+        try:
+            subprocess.Popen([
+                sys.executable,
+                staff_ui_path
+            ])
+        except OSError as error:
+            print(f"Could not open staff ui: {error}")
 
 if __name__ == "__main__":
     app = MainDashboard()
