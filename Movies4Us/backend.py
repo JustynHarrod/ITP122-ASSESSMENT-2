@@ -123,7 +123,7 @@ MOVIES_DATA = [
         "id": 9,
         "title": "The Hunger Games: Sunrise on the Reaping",
         "genre": "Adventure",
-        "rating": "M (Not-rated at this time)",
+        "rating": "M",
         "runtime": "158",
         "poster": "",
         "description": "The Hunger Games: Sunrise on the Reaping takes you back to the dangerous world of Panem, 24 years before Katniss Everdeen’s story. When young Haymitch Abernathy is selected for the brutal 50th Hunger Games, he’s thrown into a deadly competition where twice as many tributes must fight to survive. Facing ruthless opponents, cruel Capitol rules and an arena designed to test his limits, Haymitch must find the strength to fight back against a system determined to destroy him. Packed with intense action, suspense, betrayal and emotional moments, this is a must-see for Hunger Games fans!",
