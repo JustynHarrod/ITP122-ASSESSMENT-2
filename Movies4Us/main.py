@@ -4,6 +4,7 @@ from backend import *
 from logic_justyn import *
 from logic_oren import *
 from logic_james import *
+from logic_wayne import *
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import sys
@@ -117,8 +118,9 @@ class MainDashboard(ctk.CTk):
         title.pack()
         subtitle = ctk.CTkLabel(header_frame, text="Choose a movie to get started today.", font=("Arial", 13), text_color="#8a93a0")
         subtitle.pack(pady=(5, 0))
-        staff_button = ctk.CTkButton(header_frame, text="Staff Login", font=("Arial", 13, "bold"), width=100, height=35, fg_color="#f59e0b", hover_color="#915d04", text_color="#ffffff", corner_radius=8, command=self.open_staff_portal)
+        staff_button = ctk.CTkButton(header_frame, text="Staff Login", font=("Arial", 13, "bold"), width=100, height=35, fg_color="#f59e0b", hover_color="#915d04", text_color="#ffffff", corner_radius=8, command=self.toggle_login_panel)
         staff_button.place(relx=1.0, y=0, anchor="ne")
+        self.create_login_panel()
     def create_metrics_grid(self):
         """Creates the grid of clickable movie posters."""
         grid_frame = ctk.CTkScrollableFrame(self, fg_color="transparent")
@@ -154,6 +156,46 @@ class MainDashboard(ctk.CTk):
         """Closes the application."""
         plt.close("all")
         self.destroy()
+    def create_login_panel(self):
+        """Builds the hidden staff login panel that drops down under the Staff Login Button."""
+        self.login_visible = False
+        self.login_panel = ctk.CTkFrame(self, fg_color="#1a1d24", corner_radius=10, border_width=2, border_color="#2b2f38")
+        ctk.CTkLabel(self.login_panel, text="Staff Login", font=("Arial", 14, "bold"), text_color="#ffffff").pack(padx=15, pady=(12, 8))
+        self.username_entry = ctk.CTkEntry(self.login_panel, placeholder_text="Username", width=220)
+        self.username_entry.pack(padx=15, pady=4)
+        self.password_entry = ctk.CTkEntry(self.login_panel, placeholder_text="Password", show="•", width=220)
+        self.password_entry.pack(padx=15, pady=4)
+        self.login_error = ctk.CTkLabel(self.login_panel, text="", font=("Arial", 11), text_color="#ef4444")
+        self.login_error.pack(padx=15, pady=(2, 0))
+        ctk.CTkButton(self.login_panel, text="Login", fg_color="#f59e0b", hover_color="#915d04", text_color="#ffffff", width=220, command=self.attempt_staff_login).pack(padx=15, pady=(6, 12))
+        self.username_entry.bind("<Return>", lambda e: self.attempt_staff_login())
+        self.password_entry.bind("<Return>", lambda e: self.attempt_staff_login())
+    def toggle_login_panel(self):
+        """Shows the login panel if hidden, hides it if showing."""
+        if self.login_visible:
+            self.hide_login_panel()
+        else:
+            self.login_panel.place(relx=1, x=-40, y=70, anchor="ne")
+            self.login_panel.lift()
+            self.username_entry.focus()
+            self.login_visible = True
+    def hide_login_panel(self):
+        """Hides the panel and clears anything typed in."""
+        self.login_panel.place_forget()
+        self.username_entry.delete(0, "end")
+        self.password_entry.delete(0, "end")
+        self.login_error.configure(text="")
+        self.login_visible = False
+    def attempt_staff_login(self):
+        """Checks the credentials, only open the staff screen if they are valid."""
+        username = self.username_entry.get().strip()
+        password = self.password_entry.get()
+        if verify_staff_login(username, password):
+            self.hide_login_panel()
+            self.open_staff_portal()
+        else:
+            self.login_error.configure(text="Invalid username or password")
+            self.password_entry.delete(0, "end")
     def open_staff_portal(self):
         """Opens the staff ui.py file (temp) until popout for staff login."""
         staff_ui_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "staff_ui.py")

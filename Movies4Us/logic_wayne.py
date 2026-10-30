@@ -1,8 +1,10 @@
 from backend import *
-username = input("Enter your username: ")
-password = input("Enter your password: ")
 
-if username in STAFF_CREDENTIALS and STAFF_CREDENTIALS[username] == password:
-    print("Login successful!")
-else:
-    print("Invalid username or password. Please try again.")
+def verify_staff_login(username, password):
+
+    if username in STAFF_CREDENTIALS and STAFF_CREDENTIALS[username] == password:
+        return True
+        print("Login successful!")
+    else:
+        return False
+        print("Invalid username or password. Please try again.")
