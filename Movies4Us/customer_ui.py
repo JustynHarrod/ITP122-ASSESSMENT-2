@@ -58,6 +58,58 @@ class CustomerUI(ctk.CTkToplevel):
         for row, (ticket_type, price) in enumerate(backend.PRICES.items()):
             self.create_ticket_row(ticket_type, price, row)
 
+        #Checkout total
+        self.total_label = ctk.CTkLabel(
+            self,
+            text="Total: $0.00",
+            font=("Arial", 22, "bold"),
+            text_color="#ffffff"
+        )
+        self.total_label.pack(pady=25)
+#Continue payment button, cannot be used until customer select ticket
+        self.continue_button = ctk.CTkButton(
+            self,
+            text="Continue to Payment",
+            width=220,
+            height=45,
+            font=("Arial", 16, "bold"),
+            state="disabled",
+            command=self.continue_to_payment
+        )
+        self.continue_button.pack(pady=15)
+
+#Calculating total
+
+    def update_total(self):
+        total = sum(
+            self.ticket_quantities[ticket_type] * price
+            for ticket_type, price in backend.PRICES.items()
+        )
+
+        self.total_label.configure(
+            text=f"Total: ${total:.2f}"
+        )
+
+#check ticket quantities before allowing continuation
+
+    def update_continue_button(self):
+        total_tickets = sum(self.ticket_quantities.values())
+
+        if total_tickets > 0:
+            self.continue_button.configure(state="normal")
+        else:
+            self.continue_button.configure(state="disabled")
+
+
+
+#continue to payment function
+
+    def continue_to_payment(self):
+        print("Proceeding to payment...")
+        print("Selected tickets: ", self.ticket_quantities)
+        
+
+
  #Create a row for each ticket type           
     def create_ticket_row(self, ticket_type, price, row):
 
@@ -133,12 +185,16 @@ class CustomerUI(ctk.CTkToplevel):
     def add_ticket(self, ticket_type):
         self.ticket_quantities[ticket_type] += 1
         self.refresh_ticket_row(ticket_type)
+        self.update_total()
+        self.update_continue_button()
 
     def remove_ticket(self, ticket_type):
         if self.ticket_quantities[ticket_type] > 0:
             self.ticket_quantities[ticket_type] -= 1
 
         self.refresh_ticket_row(ticket_type)
+        self.update_total()
+        self.update_continue_button()
 
     def refresh_ticket_row(self, ticket_type):
         controls_frame = self.controls_frames[ticket_type]
@@ -186,10 +242,6 @@ class CustomerUI(ctk.CTkToplevel):
                 command=lambda: self.add_ticket(ticket_type)
             )
             plus_button.grid(row=0, column=2, padx=2)
-
-
-
-
 
 
 
