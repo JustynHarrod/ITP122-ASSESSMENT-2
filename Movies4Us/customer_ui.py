@@ -4,7 +4,7 @@
 
 import customtkinter as ctk
 import backend
-
+from logic_james import process_payment
 
 
 #Super basic window
@@ -78,6 +78,133 @@ class CustomerUI(ctk.CTkToplevel):
         )
         self.continue_button.pack(pady=15)
 
+#Payment screen container
+        self.payment_frame = ctk.CTkFrame(
+            self,
+            fg_color="#1a1d24",
+            corner_radius=12
+        )
+
+#Hide payment screen until customer continues
+        self.payment_frame.pack_forget()
+
+#Payment heading
+        self.payment_heading = ctk.CTkLabel(
+            self.payment_frame,
+            text="Payment Details",
+            font=("Arial", 26, "bold"),
+            text_color="#ffffff"
+        )
+        self.payment_heading.pack(pady=(25, 15))
+
+#Order Summary
+        self.order_summary = ctk.CTkLabel(
+            self.payment_frame,
+            text="Your Order Will Appear Here",
+            font=("Arial", 16),
+            text_color="#a1a1aa",
+            justify="left"
+        )
+        self.order_summary.pack(pady=20)
+
+#Card Number
+        self.card_number_entry = ctk.CTkEntry(
+            self.payment_frame,
+            placeholder_text="Card Number",
+            width=350,
+            height=40
+        )
+        self.card_number_entry.pack(pady=10)
+
+#Expiry date
+        self.expiry_entry = ctk.CTkEntry(
+            self.payment_frame,
+            placeholder_text="Expiry Date (MMYY)",
+            width=350,
+            height=40
+        )
+        self.expiry_entry.pack(pady=10)
+
+#CVV
+        self.cvv_entry = ctk.CTkEntry(
+            self.payment_frame,
+            placeholder_text="CVV",
+            width=350,
+            height=40,
+            show="*"
+        )
+        self.cvv_entry.pack(pady=10)
+
+#Back to ticket selection
+        self.back_button = ctk.CTkButton(
+            self.payment_frame,
+            text="Back to Tickets",
+            width=160,
+            command=self.back_to_tickets
+        )
+        self.back_button.pack(pady=10)
+
+#Pay now button
+        self.pay_button = ctk.CTkButton(
+            self.payment_frame,
+            text="Pay Now",
+            width=220,
+            height=45,
+            font=("Arial", 16, "bold"),
+            text_color="#ffffff",
+            command=self.make_payment
+        )
+        self.pay_button.pack(pady=15)
+
+#payment checker
+        self.payment_result = ctk.CTkLabel(
+            self.payment_frame,
+            text="",
+            font=("Arial", 14),
+            text_color="#ffffff"
+        )
+        self.payment_result.pack(pady=10)
+
+#making the payment
+    def make_payment(self):
+
+#retrieve card details
+        card_number = self.card_number_entry.get()
+        expiry = self.expiry_entry.get()
+        cvv = self.cvv_entry.get()
+
+#process payment
+        approved, message = process_payment(
+            card_number,
+            expiry,
+            cvv
+        )
+
+        if approved:
+            self.payment_result.configure(
+                text="Payment Successful!",
+                text_color="#4ade80"
+            )
+        else:
+            self.payment_result.configure(
+                text=message,
+                text_color="#ef4444"
+            )
+
+
+#Create functionality for back button
+    def back_to_tickets(self):
+
+        #Hide payment screen
+        self.payment_frame.pack_forget()
+
+        #Show ticket screen
+        self.heading.pack(pady=(30, 5))
+        self.subtitle.pack(pady=(0, 25))
+        self.ticket_frame.pack(fill="x", padx=100, pady=10)
+        self.total_label.pack(pady=25)
+        self.continue_button.pack(pady=15)
+
 #Calculating total
 
     def update_total(self):
@@ -105,9 +232,45 @@ class CustomerUI(ctk.CTkToplevel):
 #continue to payment function
 
     def continue_to_payment(self):
-        print("Proceeding to payment...")
-        print("Selected tickets: ", self.ticket_quantities)
-        
+        #build order summary
+
+        summary = "YOUR ORDER\n\n"
+
+        for ticket_type, quantity in self.ticket_quantities.items():
+            if quantity > 0:
+                price = backend.PRICES[ticket_type]
+                subtotal = quantity * price
+
+                summary += f"{ticket_type}: {quantity} x ${price:.2f} = ${subtotal:.2f}\n"
+
+        summary += f"\n{self.total_label.cget('text')}"
+
+        self.order_summary.configure(text=summary)
+
+        #hide ticket selection screen
+        self.heading.pack_forget()
+        self.subtitle.pack_forget()
+        self.ticket_frame.pack_forget()
+        self.continue_button.pack_forget()
+        self.total_label.pack_forget()
+
+        #Dispaly payment screen
+        self.payment_frame.pack(
+            fill="x",
+            padx=100,
+            pady=10
+        )
+
+
+
+
+
+
+
+
+
+
+
 
 
  #Create a row for each ticket type           
@@ -242,20 +405,3 @@ class CustomerUI(ctk.CTkToplevel):
                 command=lambda: self.add_ticket(ticket_type)
             )
             plus_button.grid(row=0, column=2, padx=2)
-
-
-
-
-
-
-
-
-
-#Test loop to run Customer UI while I am building it
-if __name__ == "__main__":
-    app = ctk.CTk()
-    app.withdraw()
-
-    customer_window = CustomerUI(app)
-
-    app.mainloop()
