@@ -405,3 +405,9 @@ class CustomerUI(ctk.CTkToplevel):
                 command=lambda: self.add_ticket(ticket_type)
             )
             plus_button.grid(row=0, column=2, padx=2)
+
+if __name__ == "__main__":
+    app = ctk.CTk()
+    app.withdraw()
+
+    customer_window = CustomerUI(app)
