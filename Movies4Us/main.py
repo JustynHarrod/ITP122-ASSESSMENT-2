@@ -86,13 +86,28 @@ class MovieInfoPopup(ctk.CTkToplevel):
             ctk.CTkLabel(details, text=description, font=("Arial", 13), text_color="#ffffff", wraplength=950, justify="left").grid(row=5, column=0, sticky="w", pady=(12, 15))
         buttons = ctk.CTkFrame(details, fg_color="transparent")
         buttons.grid(row=6, column=0, sticky="ew", pady=(20, 0))
-        ctk.CTkButton(buttons, text="Continue to Checkout", fg_color="#f59e0b", hover_color="#8b5800", command=self.checkout).pack(fill="x", pady=(0, 10))
-        ctk.CTkButton(buttons, text="Back to Movies", fg_color="#2b2f38", hover_color="#3a3f4b", command=self.destroy).pack(fill="x")
+        session_list = [s for s in movie.get("sessions", []) if "time" in s]
+        self.checkout_button = ctk.CTkButton(buttons, text="Continue to Checkout", fg_color="#f59e0b", hover_color="#8b5800", command=self.show_sessions)
+        self.checkout_button.pack(fill="x", pady=(0, 10))
+        self.back_button = ctk.CTkButton(buttons, text="Back to Movies", fg_color="#2b2f38", hover_color="#3a3f4b", command=self.destroy)
+        self.back_button.pack(fill="x")
+        self.session_frame = ctk.CTkFrame(buttons, fg_color="transparent")
+        ctk.CTkLabel(self.session_frame, text="Choose a session time", font=("Arial", 14, "bold"), text_color="#ffffff").pack(pady=(0, 8))
+        if session_list:
+            for session in session_list:
+                ctk.CTkButton(self.session_frame, text=session["time"], fg_color="#f59e0b", hover_color="#8b5800", command=lambda s=session: self.choose_session(s)).pack(fill="x", pady=4)
+        else:
+            ctk.CTkLabel(self.session_frame, text="No times available", text_color="#8a93a0").pack()
 
-    def checkout(self):
-        """Runs the checkout callback and closes the popup."""
+    def show_sessions(self):
+        """Swaps the checkout button for the session time buttons."""
+        self.checkout_button.pack_forget()
+        self.session_frame.pack(fill="x", pady=(0, 10), before=self.back_button)
+
+    def choose_session(self, session):
+        """Passes the movie and chosen session to the checkout callback, then closes the popup."""
         if self.on_checkout:
-            self.on_checkout(self.movie)
+            self.on_checkout(self.movie, session)
         self.destroy()
 
 class MainDashboard(ctk.CTk):
@@ -145,11 +160,11 @@ class MainDashboard(ctk.CTk):
             else:
                 card.configure(border_color="#2b2f38")
         MovieInfoPopup(self, movie, on_checkout=self.open_checkout)
-    def open_checkout(self, movie):
-        """Opens the customer checkout interface from customer ui.py file."""
+    def open_checkout(self, movie, session):
+        """Opens the customer checkout interface with the chosen movie and session time."""
         customer_ui_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "customer_ui.py")
         try:
-            subprocess.Popen([sys.executable, customer_ui_path])
+            subprocess.Popen([sys.executable, customer_ui_path, movie.get("title", ""), session.get("time", "")])
         except OSError as error:
             print(f"Could not open checkout: {error}")
     def on_close(self):
