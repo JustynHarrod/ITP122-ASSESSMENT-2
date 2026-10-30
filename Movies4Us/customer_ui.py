@@ -5,7 +5,7 @@
 import customtkinter as ctk
 import backend
 from logic_james import process_payment
-
+print("Customer UI file started")
 
 #Super basic window
 class CustomerUI(ctk.CTkToplevel):
@@ -406,8 +406,11 @@ class CustomerUI(ctk.CTkToplevel):
             )
             plus_button.grid(row=0, column=2, padx=2)
 
+#Test loop to run Customer UI while I am building it
 if __name__ == "__main__":
     app = ctk.CTk()
     app.withdraw()
 
     customer_window = CustomerUI(app)
+
+    app.mainloop()
