@@ -20,7 +20,7 @@ STAFF_CREDENTIALS
 STAFF_CREDENTIALS[username] ==
 password
     ):
-         
+#her is the print statements if username and password are either correct or incorect      
          print("welcome,",
 username)
          print("Login successful!")
@@ -30,10 +30,12 @@ username)
          print("Invalid username or password. please try again.")
 
          print("Attempts remaining:", 2 - attempt)
-
+#here if 3 unsuccsessful attempts to enter either username or password combination the program will print as such and end the program
 else:
      print("Too many unsuccessful"
  "attempts. program ended.")
               
 
   
+
+

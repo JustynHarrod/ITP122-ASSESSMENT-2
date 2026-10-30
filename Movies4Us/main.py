@@ -4,95 +4,99 @@ from backend import *
 from logic_justyn import *
 from logic_oren import *
 from logic_james import *
+from logic_wayne import *
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import sys
-import random
-
+import subprocess
+import os
 ctk.set_appearance_mode("Dark")
 ctk.set_default_color_theme("dark-blue")
 
-class MovieAvailabilityWidget(ctk.CTkFrame):
-    """Interactive panel with movie selector tabs, session progress bars, pie chart, and occupancy rate."""
-    def __init__(self, master, on_movie_change=None):
-        super().__init__(master, fg_color="#1a1d24", corner_radius=10)
-        self.on_movie_change = on_movie_change
-        self.grid_columnconfigure(0, weight=1)
-        self.grid_rowconfigure(2, weight=1)   
-        title_label = ctk.CTkLabel(self, text="Movie Performance & Breakdown", font=("Arial", 16, "bold"), text_color="#ffffff")
-        title_label.grid(row=0, column=0, sticky="n", padx=15, pady=(15, 10))
-        self.nav_frame = ctk.CTkScrollableFrame(self, orientation="horizontal", fg_color="transparent", height=45)
-        self.nav_frame.grid(row=1, column=0, sticky="ew", padx=15, pady=(0, 10))
-        self.content_container = ctk.CTkFrame(self, fg_color="transparent")
-        self.content_container.grid(row=2, column=0, sticky="nsew", padx=15, pady=(0, 15))
-        self.content_container.grid_columnconfigure(0, weight=1)
-        self.content_container.grid_columnconfigure(1, weight=1)
-        self.content_container.grid_rowconfigure(0, weight=1)
-        self.left_sub = ctk.CTkFrame(self.content_container, fg_color="transparent")
-        self.left_sub.grid(row=0, column=0, sticky="nsew", padx=(0, 10))
-        self.right_sub = ctk.CTkFrame(self.content_container, fg_color="#14171f", corner_radius=8)
-        self.right_sub.grid(row=0, column=1, sticky="nsew", padx=(10, 0))
-        self.right_sub.grid_columnconfigure(0, weight=1)
-        self.right_sub.grid_rowconfigure(0, weight=1)
-        self.fig = None
-        self.ax = None
-        self.canvas = None
-        self.current_movie_index = 0
-        self.create_movie_tabs()
-        self.load_movie_data(self.current_movie_index)
-
-    def create_movie_tabs(self):
-        """Creates clickable buttons at the top for each movie."""
-        for index, movie in enumerate(MOVIES_DATA):
-            btn = ctk.CTkButton(self.nav_frame, text=movie["title"], font=("Arial", 12), fg_color="#2b2f38", hover_color="#3a3f4b", text_color="#ffffff", height=30, command=lambda idx=index: self.switch_movie(idx))
-            btn.pack(side="left", padx=4)
-
-class MoviePosterWidget(ctk.CTkFrame):
-    """Panel displaying the selected movie poster filling ~90% of container space."""
-    def __init__(self, master):
-        super().__init__(master, fg_color="#1a1d24", corner_radius=10)
-        self.grid_columnconfigure(0, weight=1)
-        self.grid_rowconfigure(1, weight=1)
-        title_label = ctk.CTkLabel(self, text="Selected Movie Spotlight", font=("Arial", 16, "bold"), text_color="#ffffff")
-        title_label.grid(row=0, column=0, sticky="n", padx=20, pady=(20, 10))
-        self.display_frame = ctk.CTkFrame(self, fg_color="transparent")
-        self.display_frame.grid(row=1, column=0, sticky="nsew", padx=20, pady=(0, 20))
-        self.display_frame.grid_columnconfigure(0, weight=1)
-        self.display_frame.grid_rowconfigure(0, weight=1)
-
-    def update_poster(self, index):
-        """Loads and scales the poster image to fill ~90% of the display area."""
-        for widget in self.display_frame.winfo_children():
-            widget.destroy()
-        movie = MOVIES_DATA[index]
-        try:
-            pil_img = Image.open(movie["poster"])
-            movie_image = ctk.CTkImage(light_image=pil_img, dark_image=pil_img, size=(240, 340))
-            img_label = ctk.CTkLabel(self.display_frame, text="", image=movie_image)
-            img_label.grid(row=0, column=0, sticky="nsew", pady=5)
-        except Exception:
-            fallback_box = ctk.CTkFrame(self.display_frame, fg_color="#2b2f38", corner_radius=6)
-            fallback_box.grid(row=0, column=0, sticky="nsew", pady=5)
-            fallback_label = ctk.CTkLabel(fallback_box, text=f"No poster found\n({movie['title']})", font=("Arial", 12), text_color="#ffffff")
-            fallback_label.place(relx=0.5, rely=0.5, anchor="center")
-        meta_label = ctk.CTkLabel(self.display_frame, text=f"{movie['title']} ({movie['rating']})", font=("Arial", 14, "bold"), text_color="#ffffff")
-        meta_label.grid(row=1, column=0, pady=(10, 0))
-
 class MetricCard(ctk.CTkFrame):
-    """Reusable card with content perfectly centered both horizontally and vertically."""
-    def __init__(self, master, title, subtitle="", poster=None):
-        super().__init__(master, fg_color="#1a1d24", corner_radius=10)
-        container = ctk.CTkFrame(self, fg_color="transparent")
-        container.place(relx=0.5, rely=0.5, anchor="center")
-        self.title_label = ctk.CTkLabel(container, text=title, font=("Arial", 12), text_color="#8a93a0", anchor="center", justify="center")
-        self.title_label.pack(anchor="center", pady=(0, 4))
-        if subtitle:
-            self.sub_label = ctk.CTkLabel(container, text=subtitle, font=("Arial", 11), text_color="#6c757d", anchor="center", justify="center")
-            self.sub_label.pack(anchor="center")
-        else:
-            self.configure(height=100)
+    """This class created the poster, movie title and rating in the button for selecting."""
+    def __init__(self, master, movie, command=None):
+        super().__init__(master, fg_color="#1a1d24", corner_radius=10, border_width=2, border_color="#2b2f38")
+        self.movie = movie
+        self.command = command
+        self.poster_image = None
+        self.grid_columnconfigure(0, weight=1)
+        try:
+            pil_img = Image.open(movie["poster"]).convert("RGB")
+            self.poster_image = ctk.CTkImage(light_image=pil_img, dark_image=pil_img, size=(150, 210))
+            poster_label = ctk.CTkLabel(self, text="", image=self.poster_image)
+        except (FileNotFoundError, OSError, KeyError):
+            poster_label = ctk.CTkLabel(self, text="No poster found", text_color="#8a93a0", height=210)
+        poster_label.grid(row=0, column=0, padx=8, pady=(8, 4))
+        title_label = ctk.CTkLabel(self, text=movie.get("title", "Unknown movie"), font=("Arial", 13, "bold"), text_color="#ffffff", wraplength=160)
+        title_label.grid(row=1, column=0, padx=5, pady=4)
+        rating_label = ctk.CTkLabel(self,text=f"Rating: {movie.get('rating', 'N/A')}", font=("Arial", 11), text_color="#8a93a0")
+        rating_label.grid(row=2, column=0, pady=(0, 10))
+        # Makes the poster and its details clickable.
+        for widget in (self, poster_label, title_label, rating_label):
+            widget.bind("<Button-1>", self.select_movie)
+            widget.bind("<Enter>", self.on_enter)
+            widget.bind("<Leave>", self.on_leave)
+    def select_movie(self, event=None):
+        """Select movie event."""
+        if self.command:
+            self.command()
+    def on_enter(self, event=None):
+        self.configure(border_color="#f59e0b")
+    def on_leave(self, event=None):
+        self.configure(border_color="#2b2f38")
+
+class MovieInfoPopup(ctk.CTkToplevel):
+    """This class is for the popup information after user selects the movie."""
+    def __init__(self, master, movie, on_checkout=None):
+        super().__init__(master)
+        self.movie = movie
+        self.on_checkout = on_checkout
+        self.poster_image = None
+        self.title(movie.get("title", "Movie details"))
+        self.geometry("1280x900")
+        self.configure(fg_color="#0f1117")
+        self.transient(master)
+        self.grab_set()
+        self.grid_columnconfigure(1, weight=1)
+        self.grid_rowconfigure(0, weight=1)
+        try:
+            pil_img = Image.open(movie["poster"]).convert("RGB")
+            self.poster_image = ctk.CTkImage(light_image=pil_img, dark_image=pil_img, size=(220, 320))
+            poster_label = ctk.CTkLabel(self, text="", image=self.poster_image)
+        except (FileNotFoundError, OSError, KeyError):
+            poster_label = ctk.CTkLabel(self, text="No poster found", text_color="#8a93a0", width=220, height=320)
+        poster_label.grid(row=0, column=0, padx=25, pady=25, sticky="n")
+        details = ctk.CTkFrame(self, fg_color="transparent")
+        details.grid(row=0, column=1, padx=(0, 25), pady=25, sticky="nsew")
+        details.grid_columnconfigure(0, weight=1)
+        ctk.CTkLabel(details, text=movie.get("title", "Unknown movie"), font=("Arial", 22, "bold"), text_color="#ffffff", wraplength=530).grid(row=0, column=0, sticky="w", pady=(0, 12))
+        ctk.CTkLabel(details, text=f"Rating: {movie.get('rating', 'N/A')}", font=("Arial", 14), text_color="#8a93a0").grid(row=1, column=0, sticky="w", pady=4)
+        if movie.get("genre"):
+            ctk.CTkLabel(details, text=f"Genre: {movie['genre']}", font=("Arial", 14), text_color="#8a93a0").grid(row=2, column=0, sticky="w", pady=4)
+        if movie.get("runtime"):
+            ctk.CTkLabel(details, text=f"Duration: {movie['runtime']} minutes", font=("Arial", 14), text_color="#8a93a0").grid(row=3, column=0, sticky="w", pady=4)
+        session_list = movie.get("sessions", [])
+        session_time = ", ".join(
+        session["time"] for session in session_list if "time" in session
+        ) if session_list else "No times available"
+        ctk.CTkLabel(details, text=f"Sessions available: {session_time}", font=("Arial", 14), text_color="#8a93a0").grid(row=4, column=0, sticky="w", pady=4)
+        description = movie.get("description", "")
+        if description:
+            ctk.CTkLabel(details, text=description, font=("Arial", 13), text_color="#ffffff", wraplength=950, justify="left").grid(row=5, column=0, sticky="w", pady=(12, 15))
+        buttons = ctk.CTkFrame(details, fg_color="transparent")
+        buttons.grid(row=6, column=0, sticky="ew", pady=(20, 0))
+        ctk.CTkButton(buttons, text="Continue to Checkout", fg_color="#f59e0b", hover_color="#8b5800", command=self.checkout).pack(fill="x", pady=(0, 10))
+        ctk.CTkButton(buttons, text="Back to Movies", fg_color="#2b2f38", hover_color="#3a3f4b", command=self.destroy).pack(fill="x")
+
+    def checkout(self):
+        """Runs the checkout callback and closes the popup."""
+        if self.on_checkout:
+            self.on_checkout(self.movie)
+        self.destroy()
 
 class MainDashboard(ctk.CTk):
+    """Full main dashboard class, to create the prereq for header, background and window."""
     def __init__(self):
         super().__init__()
         self.title("Movies4Us - Movie Selection - Melbourne Cinema")
@@ -100,65 +104,106 @@ class MainDashboard(ctk.CTk):
         self.configure(fg_color="#0f1117")
         self.protocol("WM_DELETE_WINDOW", self.on_close)
         self.grid_columnconfigure(0, weight=1)
-        self.grid_rowconfigure(0, weight=0) # Header
-        self.grid_rowconfigure(1, weight=0) # Metrics
-        self.grid_rowconfigure(2, weight=1) # Row 2 Content
+        self.grid_rowconfigure(0, weight=0)
+        self.grid_rowconfigure(1, weight=1)
+        self.selected_movie_index = 0
+        self.movie_cards = []
         self.create_header()
         self.create_metrics_grid()
-
     def create_header(self):
+        """Creates the heading at the top of the window."""
         header_frame = ctk.CTkFrame(self, fg_color="transparent")
         header_frame.grid(row=0, column=0, sticky="ew", padx=40, pady=(30, 20))
-        header_frame.grid_columnconfigure(0, weight=1)
-        title = ctk.CTkLabel(header_frame, text="Movie Selection Portal", font=("Arial", 26, "bold"), text_color="#ffffff")
-        title.grid(row=0, column=0, sticky="n")
-        subtitle = ctk.CTkLabel(header_frame, text=("Play the movie. Ya ya"), font=("Arial", 13), text_color="#8a93a0")
-        subtitle.grid(row=1, column=0, sticky="n", pady=(5, 0))
-
-    def on_close(self):
-        """Cleanly closes Matplotlib figures and exits application without trailing after-script errors."""
-        plt.close('all')
-        self.destroy()
-        sys.exit(0)
-
+        title = ctk.CTkLabel(header_frame, text="Movies4Us - Movie Selection Portal - Melbourne Cinema", font=("Arial", 26, "bold"), text_color="#ffffff")
+        title.pack()
+        subtitle = ctk.CTkLabel(header_frame, text="Choose a movie to get started today.", font=("Arial", 13), text_color="#8a93a0")
+        subtitle.pack(pady=(5, 0))
+        staff_button = ctk.CTkButton(header_frame, text="Staff Login", font=("Arial", 13, "bold"), width=100, height=35, fg_color="#f59e0b", hover_color="#915d04", text_color="#ffffff", corner_radius=8, command=self.toggle_login_panel)
+        staff_button.place(relx=1.0, y=0, anchor="ne")
+        self.create_login_panel()
     def create_metrics_grid(self):
-        grid_frame = ctk.CTkFrame(self, fg_color="transparent")
-        grid_frame.grid_rowconfigure((0), weight=1, uniform="row")
-        grid_frame.grid(row=0, column=0, sticky="new", padx=40, pady=30)
-        grid_frame.grid_rowconfigure((1), weight=1, uniform="row")
-        grid_frame.grid(row=1, column=0, sticky="new", padx=40, pady=30)
-        grid_frame.grid_columnconfigure((0, 1, 2, 3), weight=1, uniform="col")
-        card_movie1 = MetricCard(grid_frame, title="Street Fighter", subtitle="M | Action | 119 minutes", poster="images/streetfighter.png")
-        card_movie1.grid(row=0, column=0, sticky="ew", padx=(0, 10))
-        card_movie2 = MetricCard(grid_frame, title="Movie 2", subtitle="1234")
-        card_movie2.grid(row=0, column=1, sticky="ew", padx=10)
-        card_movie3 = MetricCard(grid_frame, title="Movie 3", subtitle="1234")
-        card_movie3.grid(row=0, column=2, sticky="ew", padx=10)
-        card_movie4 = MetricCard(grid_frame, title="Movie 4", subtitle="1234")
-        card_movie4.grid(row=0, column=3, sticky="ew", padx=(10, 0))
-        card_movie5 = MetricCard(grid_frame, title="Movie 5", subtitle="1234")
-        card_movie5.grid(row=2, column=0, sticky="ew", padx=(0, 10))
-        card_movie6 = MetricCard(grid_frame, title="Movie 6", subtitle="1234")
-        card_movie6.grid(row=2, column=1, sticky="ew", padx=10)
-        card_movie7 = MetricCard(grid_frame, title="Movie 7", subtitle="1234")
-        card_movie7.grid(row=2, column=2, sticky="ew", padx=10)
-        card_movie8 = MetricCard(grid_frame, title="Movie 8", subtitle="1234")
-        card_movie8.grid(row=2, column=3, sticky="ew", padx=(10, 0))
-
-
-    def create_row_two(self):
-        """Splits Row 2 into 2 columns for the session slider and large poster spotlight."""
-        row2_frame = ctk.CTkFrame(self, fg_color="transparent")
-        row2_frame.grid(row=2, column=0, sticky="nsew", padx=40, pady=(10, 30))
-        row2_frame.grid_columnconfigure(0, weight=2)
-        row2_frame.grid_columnconfigure(1, weight=1)
-        row2_frame.grid_rowconfigure(0, weight=1)
-        self.poster_widget = MoviePosterWidget(row2_frame)
-        self.poster_widget.grid(row=0, column=1, sticky="nsew", padx=(10, 0))
-        movie_panel = MovieAvailabilityWidget(row2_frame, on_movie_change=self.poster_widget.update_poster)
-        movie_panel.grid(row=0, column=0, sticky="nsew", padx=(0, 10))
+        """Creates the grid of clickable movie posters."""
+        grid_frame = ctk.CTkScrollableFrame(self, fg_color="transparent")
+        grid_frame.grid(row=1, column=0, sticky="nsew", padx=40, pady=(0, 30))
+        for col in range(4):
+            grid_frame.grid_columnconfigure(col, weight=1, uniform="col")
+        for index, movie in enumerate(MOVIES_DATA):
+            row = index // 4
+            col = index % 4
+            card = MetricCard(grid_frame, movie=movie, command=lambda idx=index: self.select_movie(idx))
+            card.grid(row=row, column=col, sticky="n", padx=10, pady=10)
+            self.movie_cards.append(card)
+    def select_movie(self, index):
+        """Opens the information popup for the selected movie."""
+        if index < 0 or index >= len(MOVIES_DATA):
+            return
+        self.selected_movie_index = index
+        movie = MOVIES_DATA[index]
+        for i, card in enumerate(self.movie_cards):
+            if i == index:
+                card.configure(border_color="#f59e0b")
+            else:
+                card.configure(border_color="#2b2f38")
+        MovieInfoPopup(self, movie, on_checkout=self.open_checkout)
+    def open_checkout(self, movie):
+        """Opens the customer checkout interface from customer ui.py file."""
+        customer_ui_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "customer_ui.py")
+        try:
+            subprocess.Popen([sys.executable, customer_ui_path])
+        except OSError as error:
+            print(f"Could not open checkout: {error}")
+    def on_close(self):
+        """Closes the application."""
+        plt.close("all")
+        self.destroy()
+    def create_login_panel(self):
+        """Builds the hidden staff login panel that drops down under the Staff Login Button."""
+        self.login_visible = False
+        self.login_panel = ctk.CTkFrame(self, fg_color="#1a1d24", corner_radius=10, border_width=2, border_color="#2b2f38")
+        ctk.CTkLabel(self.login_panel, text="Staff Login", font=("Arial", 14, "bold"), text_color="#ffffff").pack(padx=15, pady=(12, 8))
+        self.username_entry = ctk.CTkEntry(self.login_panel, placeholder_text="Username", width=220)
+        self.username_entry.pack(padx=15, pady=4)
+        self.password_entry = ctk.CTkEntry(self.login_panel, placeholder_text="Password", show="•", width=220)
+        self.password_entry.pack(padx=15, pady=4)
+        self.login_error = ctk.CTkLabel(self.login_panel, text="", font=("Arial", 11), text_color="#ef4444")
+        self.login_error.pack(padx=15, pady=(2, 0))
+        ctk.CTkButton(self.login_panel, text="Login", fg_color="#f59e0b", hover_color="#915d04", text_color="#ffffff", width=220, command=self.attempt_staff_login).pack(padx=15, pady=(6, 12))
+        self.username_entry.bind("<Return>", lambda e: self.attempt_staff_login())
+        self.password_entry.bind("<Return>", lambda e: self.attempt_staff_login())
+    def toggle_login_panel(self):
+        """Shows the login panel if hidden, hides it if showing."""
+        if self.login_visible:
+            self.hide_login_panel()
+        else:
+            self.login_panel.place(relx=1, x=-40, y=70, anchor="ne")
+            self.login_panel.lift()
+            self.username_entry.focus()
+            self.login_visible = True
+    def hide_login_panel(self):
+        """Hides the panel and clears anything typed in."""
+        self.login_panel.place_forget()
+        self.username_entry.delete(0, "end")
+        self.password_entry.delete(0, "end")
+        self.login_error.configure(text="")
+        self.login_visible = False
+    def attempt_staff_login(self):
+        """Checks the credentials, only open the staff screen if they are valid."""
+        username = self.username_entry.get().strip()
+        password = self.password_entry.get()
+        if verify_staff_login(username, password):
+            self.hide_login_panel()
+            self.open_staff_portal()
+        else:
+            self.login_error.configure(text="Invalid username or password")
+            self.password_entry.delete(0, "end")
+    def open_staff_portal(self):
+        """Opens the staff ui.py file (temp) until popout for staff login."""
+        staff_ui_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "staff_ui.py")
+        try:
+            subprocess.Popen([sys.executable, staff_ui_path])
+        except OSError as error:
+            print(f"Could not open staff ui: {error}")
 
 if __name__ == "__main__":
     app = MainDashboard()
     app.mainloop()
-
