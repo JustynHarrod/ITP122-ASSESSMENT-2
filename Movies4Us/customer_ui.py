@@ -4,13 +4,16 @@
 
 import customtkinter as ctk
 import backend
+import sys
 from logic_james import process_payment
 print("Customer UI file started")
 
 #Super basic window
 class CustomerUI(ctk.CTkToplevel):
-    def __init__(self, master):
+    def __init__(self, master, movie_title="Unknown movie", session_time="No session selected"):
         super().__init__(master)
+        self.movie_title = movie_title
+        self.session_time = session_time
 #Dictionary of default ticket quantities
         self.ticket_quantities = {
             "Adult": 0,
@@ -39,6 +42,15 @@ class CustomerUI(ctk.CTkToplevel):
             text_color="#a1a1aa"
         )
         self.subtitle.pack(pady=(0, 25))
+
+        # Movie and session chosen on the main screen
+        self.session_label = ctk.CTkLabel(
+            self,
+            text=f"{self.movie_title}  |  Session: {self.session_time}",
+            font=("Arial", 16, "bold"),
+            text_color="#f59e0b"
+        )
+        self.session_label.pack(pady=(0, 15))
 
         # Container for ticket rows
         self.ticket_frame = ctk.CTkFrame(
@@ -201,6 +213,7 @@ class CustomerUI(ctk.CTkToplevel):
         #Show ticket screen
         self.heading.pack(pady=(30, 5))
         self.subtitle.pack(pady=(0, 25))
+        self.session_label.pack(pady=(0, 15))
         self.ticket_frame.pack(fill="x", padx=100, pady=10)
         self.total_label.pack(pady=25)
         self.continue_button.pack(pady=15)
@@ -234,7 +247,7 @@ class CustomerUI(ctk.CTkToplevel):
     def continue_to_payment(self):
         #build order summary
 
-        summary = "YOUR ORDER\n\n"
+        summary = f"YOUR ORDER\n\n{self.movie_title} - {self.session_time}\n\n"
 
         for ticket_type, quantity in self.ticket_quantities.items():
             if quantity > 0:
@@ -250,6 +263,7 @@ class CustomerUI(ctk.CTkToplevel):
         #hide ticket selection screen
         self.heading.pack_forget()
         self.subtitle.pack_forget()
+        self.session_label.pack_forget()
         self.ticket_frame.pack_forget()
         self.continue_button.pack_forget()
         self.total_label.pack_forget()
@@ -408,9 +422,15 @@ class CustomerUI(ctk.CTkToplevel):
 
 #Test loop to run Customer UI while I am building it
 if __name__ == "__main__":
+    # main.py passes the movie title and session time as command-line arguments.
+    movie_title = sys.argv[1] if len(sys.argv) > 1 else "Unknown movie"
+    session_time = sys.argv[2] if len(sys.argv) > 2 else "No session selected"
+
     app = ctk.CTk()
     app.withdraw()
 
-    customer_window = CustomerUI(app)
+    customer_window = CustomerUI(app, movie_title, session_time)
+    # Closing the checkout window should also end the hidden root window.
+    customer_window.protocol("WM_DELETE_WINDOW", app.destroy)
 
     app.mainloop()
