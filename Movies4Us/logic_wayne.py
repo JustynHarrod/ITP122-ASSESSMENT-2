@@ -1,39 +1,41 @@
-#vairables stored in backend are called upon with an import for staff credentials for login
-from backend import *
-STAFF_CREDENTIALS
-#here user input of credentials they must match stored values for successfull login
-#range gives the user 3 attempts to sucsessfully log in or the program will end
-for attempt in range(3):
-    username = input("Enter your " \
-"username: ").strip()
-    password = input("Enter your " \
-"password: ")
+from backend import*
 
-#here if username and password match the loop will continue to the print function to a welcome successful login and break stopping the loop
-#here else username and password do not match the loop will continue to the print function invalid un or pw please try again
-#and else print the attempts remaining
+def staff_login():
+    for attempt in range(3):
+        username = input("Enter " \
+        "your username ").strip()
+        password = input("Enter your " \
+        "password")
 
-    if (
-        username in
+        if (
+            username in
 STAFF_CREDENTIALS
-        and
+            and
 STAFF_CREDENTIALS[username] ==
-password
-    ):
-#her is the print statements if username and password are either correct or incorect      
-         print("welcome,",
+password            
+        ):
+            print("Welcome,",
 username)
-         print("Login successful!")
+            print("login successful!")
+            return True 
+            
 
-         break
+        else:
+            print("Invalid  \
+username, or password please try again.")
+        print ("Attempts " \
+        "remaining:",  2 - attempt)
+
     else:
-         print("Invalid username or password. please try again.")
+        print("Too many " \
+        "unsucccessful attempts program " \
+        "ended.")
+    return False
 
-         print("Attempts remaining:", 2 - attempt)
-#here if 3 unsuccsessful attempts to enter either username or password combination the program will print as such and end the program
-else:
-     print("Too many unsuccessful"
- "attempts. program ended.")
+
+
+staff_login()            
+            
               
 
   
