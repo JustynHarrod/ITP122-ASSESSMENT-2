@@ -1,5 +1,16 @@
 #import staff credentials from backend
 from backend import*
+#thi is for GUI login UN and PW and return true or false 
+def verify_staff_login(username,
+password):
+    return (
+        username in
+STAFF_CREDENTIALS
+        and
+STAFF_CREDENTIALS[username] ==
+password
+    )
+
 #staff input credentials they have three attempts
 def staff_login():
     for attempt in range(3):
