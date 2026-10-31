@@ -1,12 +1,13 @@
+#import staff credentials from backend
 from backend import*
-
+#staff input credentials they have three attempts
 def staff_login():
     for attempt in range(3):
         username = input("Enter " \
         "your username ").strip()
         password = input("Enter your " \
         "password")
-
+#if credentials are correct a welcome with there name and a successful print are returned
         if (
             username in
 STAFF_CREDENTIALS
@@ -18,18 +19,17 @@ password
 username)
             print("login successful!")
             return True 
-            
-
+#if a failed attempt is detected a please try again will show and how many attempts out of 3 are remaining
         else:
-            print("Invalid  \
-username, or password please try again.")
+            print("Invalid " \
+            "username or password detected please try again.")
         print ("Attempts " \
         "remaining:",  2 - attempt)
-
+#or else the loop loop finishes with to many unsuccessful attempts please try again
     else:
         print("Too many " \
         "unsucccessful attempts program " \
-        "ended.")
+        "ended please try again.")
     return False
 
 
