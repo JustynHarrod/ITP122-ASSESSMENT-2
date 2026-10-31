@@ -11,7 +11,7 @@ STAFF_CREDENTIALS[username] ==
 password
     )
 
-#staff input credentials they have three attempts
+#staff input credentials they have three attempts this only works in the terminal ATM yet to implement GUI
 def staff_login():
     for attempt in range(3):
         username = input("Enter " \
